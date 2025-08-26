@@ -3,6 +3,9 @@ import config from "../../../config";
 import { Student } from "../../student/student.interface";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
+import { studentmodel } from "../../student/student.model";
+import { v4 as uuid } from "uuid";
+
 
 
 
@@ -25,13 +28,29 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
 
   userData.role="student"
 
-
-  userData.id="20301010001"
+   
+  //userData.id="2030101000"
+  userData.id=uuid()
     
+  let existingUser=await UserModel.findOne({id:userData.id.toString()})
+   
+  // console.log(existingUser)
+ 
+  if(existingUser){
+
+    return {
+      message:"user already exist"
+    }
+    
+   
+
+
+  }
+
 
   //create users 
-  let newUser=await UserModel.create(userData)
-
+   let newUser=await UserModel.create(userData)
+  
 
 
   // create students
@@ -41,6 +60,12 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
     student.id=newUser.id
     student.user=newUser._id
   }
+
+
+
+  let newStudent=await studentmodel.create(student)
+
+  return newStudent
 
 
     

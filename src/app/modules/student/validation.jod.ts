@@ -7,7 +7,7 @@ const isActiveEnum = z.enum(["active", "blocked"]);
 
 // Zod schema for Student
 export const studentZodSchema = z.object({
-  id: z.string().nonempty({ message: "ID is required" }),
+  id: z.string().nonempty({ message: "ID is required..." }),
   password:z.string().max(20),
 
   name: z.object({

@@ -12,10 +12,10 @@ export const createStudent =async(req:Request,res:Response)=>{
 
 try{
     
-    let {password,students}=req.body
+    let {password,student}=req.body
 
 
-    let result=  await createStudentToDatabase(password,students)
+    let result=  await createStudentToDatabase(password,student)
 
 
 
@@ -24,7 +24,7 @@ try{
       
     res.status(200).json({
         status:true,
-        message:"student created successfully",
+        message:(result as any)?.message || "student created successfully",
         data:result
     })
 
@@ -33,7 +33,7 @@ try{
     // next(err)
     res.status(500).json({
         status:false,
-        message:` ${err.message} ||something Wrong`,
+        message:` ${err} ||something Wrong`,
         data:err
     })
 
