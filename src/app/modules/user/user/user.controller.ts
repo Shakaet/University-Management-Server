@@ -1,13 +1,14 @@
 import { createStudentToDatabase } from "./user.service"
 import { Student } from "../../student/student.interface"
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
+import { senResponse } from "../../../utils/sendResponse"
 
 
 
 
 
 
-export const createStudent =async(req:Request,res:Response)=>{
+export const createStudent =async(req:Request,res:Response,next:NextFunction)=>{
 
 
 try{
@@ -22,20 +23,29 @@ try{
     
      // send response
       
-    res.status(200).json({
+    // res.status(200).json({
+    //     status:true,
+    //     message:(result as any)?.message || "student created successfully",
+    //     data:result
+    // })
+
+
+    senResponse(res,200,{
         status:true,
-        message:(result as any)?.message || "student created successfully",
-        data:result
+        message:(result as any)?.message || "student created successfullyN",
+         data:result
     })
 
    }catch(err:any){
     // console.log(err)
     // next(err)
-    res.status(500).json({
-        status:false,
-        message:` ${err} ||something Wrong`,
-        data:err
-    })
+    // res.status(500).json({
+    //     status:false,
+    //     message:` ${err} ||something Wrong`,
+    //     data:err
+    // })
+
+    next(err)
 
 
     

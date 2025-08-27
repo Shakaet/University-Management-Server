@@ -29,23 +29,9 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
   userData.role="student"
 
    
-  //userData.id="2030101000"
-  userData.id=uuid()
+  userData.id="2030101000"
+  // userData.id=uuid()
     
-  let existingUser=await UserModel.findOne({id:userData.id.toString()})
-   
-  // console.log(existingUser)
- 
-  if(existingUser){
-
-    return {
-      message:"user already exist"
-    }
-    
-   
-
-
-  }
 
 
   //create users 
@@ -59,13 +45,15 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
 
     student.id=newUser.id
     student.user=newUser._id
+
+    let newStudent=await studentmodel.create(student)
+
+      return newStudent
   }
 
 
 
-  let newStudent=await studentmodel.create(student)
-
-  return newStudent
+  
 
 
     

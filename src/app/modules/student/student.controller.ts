@@ -90,11 +90,11 @@ export const getAllStudents=async(req:Request,res:Response,next:NextFunction)=>{
 
     }catch(err:any){
         // console.log(err)
-         res.status(500).json({
-        status:false,
-        message:` ${err.message} ||something Wrong`,
-        data:err
-    })
+    //      res.status(500).json({
+    //     status:false,
+    //     message:` ${err.message} ||something Wrong`,
+    //     data:err
+    // })
 
         next(err)
     }
@@ -120,11 +120,11 @@ export const getSpecificStudent=async(req:Request,res:Response,next:NextFunction
     })
 
    }catch(err:any){
-     res.status(500).json({
-        status:false,
-        message:` ${err.message} ||something Wrong`,
-        data:err
-    })
+    //  res.status(500).json({
+    //     status:false,
+    //     message:` ${err.message} ||something Wrong`,
+    //     data:err
+    // })
 
     // console.log("errroer",err)
      next(err)
@@ -149,11 +149,11 @@ export const deletedSpecificStudent=async(req:Request,res:Response,next:NextFunc
     })
 
    }catch(err:any){
-     res.status(500).json({
-        status:false,
-        message:` ${err.message} ||something Wrong`,
-        data:err
-    })
+    //  res.status(500).json({
+    //     status:false,
+    //     message:` ${err.message} ||something Wrong`,
+    //     data:err
+    // })
 
     // console.log("errroer",err)
      next(err)
@@ -180,11 +180,11 @@ export const updateStudent=async(req:Request,res:Response,next:NextFunction)=>{
     })
 
    }catch(err:any){
-     res.status(500).json({
-        status:false,
-        message:` ${err.message} ||something Wrong`,
-        data:err
-    })
+    //  res.status(500).json({
+    //     status:false,
+    //     message:` ${err.message} ||something Wrong`,
+    //     data:err
+    // })
 
     // console.log("errroer",err)
      next(err)

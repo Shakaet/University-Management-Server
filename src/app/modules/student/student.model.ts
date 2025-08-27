@@ -87,9 +87,6 @@ const localGuardianSchema=new Schema<LocalGuardian>(
 export const studentSchema = new Schema<Student,StudentModel,StudentMethods>({
   id: { type: String,required:true,unique:[true,"ID is Required"] },
   user: { type: Schema.Types.ObjectId, required: [true,"user Id is Required"] ,unique:true,ref:"User"},
-  password:{type: String,
-    required:true,
-    minLength:[6,"password should be more than 6 characters"]},
   name:{
     type:nameSchema,
     required:[true,"name is required"],

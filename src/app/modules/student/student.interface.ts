@@ -35,7 +35,6 @@ export type Guardian= {
 export type  Student=  {
   id:string,
   user:Types.ObjectId,
-  password:string,
   name:Name,
   gender:"male"|"female"|"others",
   dateOfBirth?:string,

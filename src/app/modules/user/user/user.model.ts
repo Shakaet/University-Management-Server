@@ -1,5 +1,8 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
+import bcrypt from "bcrypt"
+import config from "../../../config";
+import { NextFunction } from "express";
 
 const userSchema = new Schema<TUser>(
   {
@@ -12,5 +15,24 @@ const userSchema = new Schema<TUser>(
   },
   { timestamps: true }
 );
+
+
+
+
+
+userSchema.pre("save",async function(next){
+  let student=  this
+  student.password=await bcrypt.hash(student.password, Number(config.bcryptHash))
+  
+  next()
+}) 
+
+userSchema.post("save",async function(doc,next){
+ 
+  doc.password=""
+
+  
+  next()
+}) 
 
 export const UserModel = model<TUser>("User", userSchema);
