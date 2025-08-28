@@ -7,10 +7,11 @@ const isActiveEnum = z.enum(["active", "blocked"]);
 
 // Zod schema for Student
 export const studentZodSchema = z.object({
-  id: z.string().nonempty({ message: "ID is required..." }),
+  body: z.object({
   password:z.string().max(20),
 
-  name: z.object({
+   student:z.object({
+     name: z.object({
     firstName: z
       .string()
       .min(2, { message: "First name too small" })
@@ -65,5 +66,7 @@ export const studentZodSchema = z.object({
     val => isActiveEnum.options.includes(val),
     { message: "Status must be 'active' or 'blocked'" }
   ),
-  isDeleted:z.boolean()
-});
+   })
+})
+
+})
