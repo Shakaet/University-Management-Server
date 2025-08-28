@@ -10,7 +10,7 @@ export let notFound= (req:Request,res:Response,next:NextFunction)=>{
 
   
 
-  return res.status().json({
+  return res.status(404).json({
 
     status:false,
     message:"API not Found",

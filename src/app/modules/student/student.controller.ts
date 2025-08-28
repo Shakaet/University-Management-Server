@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, RequestHandler, Response } from "express"
 import { studentServices } from "./student.service"
+import { catchAsynFunction } from "../../utils/catchAsync"
 
-import { Student } from "./student.interface";
-import { studentZodSchema } from "./validation.jod";
+
 
 
 
@@ -76,10 +76,10 @@ import { studentZodSchema } from "./validation.jod";
 
 
 
-export const getAllStudents=async(req:Request,res:Response,next:NextFunction)=>{
+export const getAllStudents:RequestHandler=catchAsynFunction(async(req,res,next)=>{
 
 
-    try{
+  
         const result= await studentServices.getAllStudentFromDB()
 
     res.status(201).json({
@@ -88,26 +88,17 @@ export const getAllStudents=async(req:Request,res:Response,next:NextFunction)=>{
         data:result
     })
 
-    }catch(err:any){
-        // console.log(err)
-    //      res.status(500).json({
-    //     status:false,
-    //     message:` ${err.message} ||something Wrong`,
-    //     data:err
-    // })
-
-        next(err)
-    }
+    
 
     
 
     
 
-}
+})
 
-export const getSpecificStudent=async(req:Request,res:Response,next:NextFunction)=>{
+export const getSpecificStudent:RequestHandler=catchAsynFunction(async(req,res,next)=>{
 
-   try{
+  
      const id=req.params.id
      console.log(id)
 
@@ -119,25 +110,16 @@ export const getSpecificStudent=async(req:Request,res:Response,next:NextFunction
         data:result
     })
 
-   }catch(err:any){
-    //  res.status(500).json({
-    //     status:false,
-    //     message:` ${err.message} ||something Wrong`,
-    //     data:err
-    // })
-
-    // console.log("errroer",err)
-     next(err)
-   }
+  
 
 }
+)
+
+export const deletedSpecificStudent:RequestHandler=catchAsynFunction(async(req,res,next)=>{
 
 
-export const deletedSpecificStudent=async(req:Request,res:Response,next:NextFunction)=>{
 
-
-
-    try{
+   
         const id= req.params.id
 
     const result= await studentServices.deletedSpecificStudentfromDb(id)
@@ -148,21 +130,12 @@ export const deletedSpecificStudent=async(req:Request,res:Response,next:NextFunc
         data:result
     })
 
-   }catch(err:any){
-    //  res.status(500).json({
-    //     status:false,
-    //     message:` ${err.message} ||something Wrong`,
-    //     data:err
-    // })
-
-    // console.log("errroer",err)
-     next(err)
-   }
+   
     
     }
+)
 
-
-export const updateStudent=async(req:Request,res:Response,next:NextFunction)=>{
+export const updateStudent:RequestHandler=async(req,res,next)=>{
 
 
 

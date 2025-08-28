@@ -1,17 +1,17 @@
 import { createStudentToDatabase } from "./user.service"
 import { Student } from "../../student/student.interface"
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, RequestHandler, Response } from "express"
 import { senResponse } from "../../../utils/sendResponse"
+import { catchAsynFunction } from "../../../utils/catchAsync"
 
 
 
 
+// RequestHandler dile autometic req,res,next er type declard hoye jabe
+export const createStudent =catchAsynFunction(async(req,res)=>{
 
 
-export const createStudent =async(req:Request,res:Response,next:NextFunction)=>{
 
-
-try{
     
     let {password,student}=req.body
 
@@ -36,20 +36,6 @@ try{
          data:result
     })
 
-   }catch(err:any){
-    // console.log(err)
-    // next(err)
-    // res.status(500).json({
-    //     status:false,
-    //     message:` ${err} ||something Wrong`,
-    //     data:err
-    // })
+   
 
-    next(err)
-
-
-    
-
-   }
-
-}
+})
