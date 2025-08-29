@@ -59,4 +59,27 @@ const academicSemesterSchema = new Schema<TacademicSemester>(
   }
 );
 
+
+
+academicSemesterSchema.pre("save",async function(next){ // ei next ta hocche mongoose er next
+
+  let ExistingYearName=await AcademicSemesterModel.findOne({
+    name:this.name,
+    year:this.year
+  })
+
+  if(ExistingYearName){
+
+    throw new Error("Academic Semister Already exist")
+
+  }
+  next()
+
+  // Autumn= 01
+  // Summar= 02
+  // Fall= 03
+
+  
+})
+
 export const AcademicSemesterModel = model("AcademicSemester", academicSemesterSchema);
