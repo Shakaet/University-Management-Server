@@ -1,3 +1,4 @@
+import { TacademicSemester } from './../academicSem/academicSem.interface';
 import { object } from "joi";
 import config from "../../config";
 import { Student } from "../student/student.interface";
@@ -5,6 +6,7 @@ import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 import { studentmodel } from "../student/student.model";
 import { v4 as uuid } from "uuid";
+import { AcademicSemesterModel } from "../academicSem/academicSem.model";
 
 
 
@@ -29,7 +31,41 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
   userData.role="student"
 
    
-  userData.id="2030101000"
+  //  id format hobe year+code+00+01+02
+  let generatedStudentId=(payload:TacademicSemester|null)=>{
+   
+    let currentId=(0).toString()
+
+    let increment=(Number(0)+1).toString().padStart(4,"0")
+
+    let increamentId=`${payload?.year}${payload?.code}${increment}`
+
+    return increamentId
+
+
+
+  }
+
+
+
+
+
+
+
+  // find Students academic semester
+
+  let studentsAcademicSemester= await AcademicSemesterModel.findById(student.addmissionSemester)
+
+
+   if(!studentsAcademicSemester){
+    throw new Error("AcademicId is not valid")
+   }
+
+
+
+
+
+  userData.id=generatedStudentId(studentsAcademicSemester)
   // userData.id=uuid()
     
 

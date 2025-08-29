@@ -30,7 +30,7 @@ export const studentZodSchema = z.object({
     { message: "Gender is not supported" }
   ),
 
-  dateOfBirth: z.date().optional(),
+  dateOfBirth: z.string().optional(),
 
   email: z.string().email({ message: "Email is not valid" }),
 
