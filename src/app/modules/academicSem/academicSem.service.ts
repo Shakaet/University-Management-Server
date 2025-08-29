@@ -46,6 +46,11 @@ export let updateAcademicSem=async(id:string,data:TacademicSemester)=>{
 
     // console.log(id,data)
 
+     if(iSemesterNameEqualSemesterCode[data.name]!==data.code){
+
+        throw new Error(`${data.name} is not valid Semester Name for code ${data.code} ....`)
+    }
+
 
     
     let result=await AcademicSemesterModel.updateOne(
