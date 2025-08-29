@@ -1,8 +1,8 @@
 import { createStudentToDatabase } from "./user.service"
-import { Student } from "../../student/student.interface"
+import { Student } from "../student/student.interface"
 import { NextFunction, Request, RequestHandler, Response } from "express"
-import { senResponse } from "../../../utils/sendResponse"
-import { catchAsynFunction } from "../../../utils/catchAsync"
+import { senResponse } from "../../utils/sendResponse"
+import { catchAsynFunction } from "../../utils/catchAsync"
 
 
 

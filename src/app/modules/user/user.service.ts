@@ -1,9 +1,9 @@
 import { object } from "joi";
-import config from "../../../config";
-import { Student } from "../../student/student.interface";
+import config from "../../config";
+import { Student } from "../student/student.interface";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
-import { studentmodel } from "../../student/student.model";
+import { studentmodel } from "../student/student.model";
 import { v4 as uuid } from "uuid";
 
 

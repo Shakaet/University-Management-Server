@@ -2,8 +2,8 @@
 import express, { NextFunction, Request } from "express"
 import { createStudent } from "./user.controller"
 import { ZodObject } from "zod";
-import { studentZodSchema } from "../../student/validation.jod";
-import { validateRequest } from "../../../middleware/validateRequest";
+import { studentZodSchema } from "../student/validation.jod";
+import { validateRequest } from "../../middleware/validateRequest";
 
 
 
