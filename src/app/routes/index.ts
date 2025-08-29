@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { studentRoutes } from "../modules/student/student.route";
 import { userRoutes } from "../modules/user/user/user.route";
+import { AcamedicsemRoutes } from "../modules/academicSem/academicSem.route";
 
 
 
@@ -17,6 +18,10 @@ let AllRoutes=[
     {
         path:"/users",
         routes:userRoutes
+    },
+     {
+        path:"/acamedicSem",
+        routes:AcamedicsemRoutes
     }
 ]
 

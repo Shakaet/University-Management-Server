@@ -30,7 +30,7 @@ export const studentZodSchema = z.object({
     { message: "Gender is not supported" }
   ),
 
-  dateOfBirth: z.string().optional(),
+  dateOfBirth: z.date().optional(),
 
   email: z.string().email({ message: "Email is not valid" }),
 
@@ -61,11 +61,7 @@ export const studentZodSchema = z.object({
     address: z.string().nonempty({ message: "Address is required" }),
   }),
 
-  profileImg: z.string().optional(),
-  isActive: isActiveEnum.default("active").refine(
-    val => isActiveEnum.options.includes(val),
-    { message: "Status must be 'active' or 'blocked'" }
-  ),
+  profileImg: z.string().optional()
    })
 })
 
