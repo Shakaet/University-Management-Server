@@ -47,6 +47,7 @@ export type  Student=  {
   guardian:Guardian,
   localGuardian:LocalGuardian,
   profileImg?:string,
+  addmissionSemester:Types.ObjectId,
   isDeleted:boolean
 }
 

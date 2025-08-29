@@ -61,7 +61,10 @@ export const studentZodSchema = z.object({
     address: z.string().nonempty({ message: "Address is required" }),
   }),
 
-  profileImg: z.string().optional()
+
+  profileImg: z.string().optional(),
+   addmissionSemester:z.string()
+  
    })
 })
 

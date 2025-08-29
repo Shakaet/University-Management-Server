@@ -27,4 +27,16 @@ export const createAcademicSemesterZod = z.object({
   .strict()
 })
 
+export const updateAcademicSemesterZod = z.object({
+  body: z
+    .object({
+      name: z.enum(["Autumn", "Summmar", "Fall"] as const).optional(),
+      year: z.string().optional(),
+      code: z.enum(["01", "02", "03"] as const).optional(),
+      startMonth: MonthEnum.optional(),
+      endMonth: MonthEnum.optional(),
+    })
+    .strict(),
+});
+
 

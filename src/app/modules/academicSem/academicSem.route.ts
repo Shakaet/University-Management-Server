@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createAcademicSemester, findAllAcademicSemController, findAllAcademinSemController, findOneAcademicSemController, findOneAcademinSemController, updateAcademicSemController } from './academicSem.controller';
 import { validateRequest } from '../../middleware/validateRequest';
-import { createAcademicSemesterZod } from './academicsemValidate.jod';
+import { createAcademicSemesterZod, updateAcademicSemesterZod } from './academicsemValidate.jod';
 
 
 
@@ -15,7 +15,7 @@ import { createAcademicSemesterZod } from './academicsemValidate.jod';
 
     router.get("/allAcademicSemester",findAllAcademicSemController)
     router.get("/AcademicSemester/:semesterId",findOneAcademicSemController)
-    router.patch("/AcademicSemester/:semesterId",updateAcademicSemController)
+    router.patch("/AcademicSemester/:semesterId",validateRequest(updateAcademicSemesterZod),updateAcademicSemController)
 
     export let AcamedicsemRoutes=router
 

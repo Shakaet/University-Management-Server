@@ -139,6 +139,10 @@ export const studentSchema = new Schema<Student,StudentModel,StudentMethods>({
     required:true
   },
   profileImg:{type:String},
+  addmissionSemester:{
+    type:Schema.Types.ObjectId,
+    ref:"AcademicSemester"
+  },
   isDeleted:{type:Boolean,default:false}
 
 
