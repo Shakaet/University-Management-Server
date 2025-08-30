@@ -7,6 +7,7 @@ import { UserModel } from "./user.model";
 import { studentmodel } from "../student/student.model";
 import { v4 as uuid } from "uuid";
 import { AcademicSemesterModel } from "../academicSem/academicSem.model";
+import { generatedStudentId } from './user.utils';
 
 
 
@@ -31,21 +32,7 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
   userData.role="student"
 
    
-  //  id format hobe year+code+00+01+02
-  let generatedStudentId=(payload:TacademicSemester|null)=>{
-   
-    let currentId=(0).toString()
-
-    let increment=(Number(0)+1).toString().padStart(4,"0")
-
-    let increamentId=`${payload?.year}${payload?.code}${increment}`
-
-    return increamentId
-
-
-
-  }
-
+ 
 
 
 
@@ -65,7 +52,7 @@ export const createStudentToDatabase=async(password:string,student:Student)=>{
 
 
 
-  userData.id=generatedStudentId(studentsAcademicSemester)
+  userData.id=await generatedStudentId(studentsAcademicSemester)
   // userData.id=uuid()
     
 
