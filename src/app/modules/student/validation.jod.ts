@@ -69,3 +69,47 @@ export const studentZodSchema = z.object({
 })
 
 })
+
+
+
+
+
+
+
+
+// {
+  
+//     "password": "SecurePass123",
+//     "student": {
+//       "name": {
+//         "firstName": "Shakaet",
+//         "middleName": "Al",
+//         "lastName": "Sakayet"
+//       },
+//       "gender": "male",
+//       "dateOfBirth": "2000-05-15",
+//       "email": "shakaet@example.com",
+//       "contactNo": "01712345678",
+//       "emergencyContactNo": "01812345678",
+//       "bloodGroup": "A+",
+//       "presentAddress": "Chittagong, Bangladesh",
+//       "permanentAddress": "Chittagong, Bangladesh",
+//       "guardian": {
+//         "fatherName": "Abdul Karim",
+//         "fatherOccupation": "Businessman",
+//         "fatherContactNo": "01787654321",
+//         "motherName": "Rahima Begum",
+//         "motherOccupation": "Teacher",
+//         "motherContactNo": "01887654321"
+//       },
+//       "localGuardian": {
+//         "name": "Md. Hasan",
+//         "occupation": "Engineer",
+//         "contactNo": "01612345678",
+//         "address": "Dhaka, Bangladesh"
+//       },
+//       "profileImg": "https://example.com/images/profile.png",
+//       "addmissionSemester": "68b3fffd1b0025f5a206bf46"
+//     }
+  
+// }

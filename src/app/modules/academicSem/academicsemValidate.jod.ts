@@ -40,3 +40,17 @@ export const updateAcademicSemesterZod = z.object({
 });
 
 
+
+
+
+
+
+// {
+ 
+//     "name": "Autumn",
+//     "year": "2025",
+//     "code": "01",
+//     "startMonth": "January",
+//     "endMonth": "May"
+  
+// }
