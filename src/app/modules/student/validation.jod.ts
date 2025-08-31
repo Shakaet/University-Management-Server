@@ -1,84 +1,101 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 // Enum schemas with custom messages using refine
-const genderEnum = z.enum(["male", "female", "others"]);
-const bloodGroupEnum = z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]);
-const isActiveEnum = z.enum(["active", "blocked"]);
+const genderEnum = z.enum(['male', 'female', 'others'])
+const bloodGroupEnum = z.enum([
+  'A+',
+  'A-',
+  'B+',
+  'B-',
+  'AB+',
+  'AB-',
+  'O+',
+  'O-',
+])
+const isActiveEnum = z.enum(['active', 'blocked'])
 
 // Zod schema for Student
 export const studentZodSchema = z.object({
   body: z.object({
-  password:z.string().max(20),
+    password: z.string().max(20),
 
-   student:z.object({
-     name: z.object({
-    firstName: z
-      .string()
-      .min(2, { message: "First name too small" })
-      .refine(
-        val => val.charAt(0) === val.charAt(0).toUpperCase(),
-        { message: "First name must start with a capital letter" }
+    student: z.object({
+      name: z.object({
+        firstName: z
+          .string()
+          .min(2, { message: 'First name too small' })
+          .refine(val => val.charAt(0) === val.charAt(0).toUpperCase(), {
+            message: 'First name must start with a capital letter',
+          }),
+        middleName: z.string().optional(),
+        lastName: z
+          .string()
+          .regex(/^[A-Za-z]+$/, {
+            message: 'Last name must contain only letters',
+          }),
+      }),
+
+      gender: genderEnum.refine(val => genderEnum.options.includes(val), {
+        message: 'Gender is not supported',
+      }),
+
+      dateOfBirth: z.string().optional(),
+
+      email: z.string().email({ message: 'Email is not valid' }),
+
+      contactNo: z.string().nonempty({ message: 'Contact number is required' }),
+      emergencyContactNo: z
+        .string()
+        .nonempty({ message: 'Emergency contact is required' }),
+
+      bloodGroup: bloodGroupEnum.refine(
+        val => bloodGroupEnum.options.includes(val),
+        { message: 'Blood group is not valid' },
       ),
-    middleName: z.string().optional(),
-    lastName: z
-      .string()
-      .regex(/^[A-Za-z]+$/, { message: "Last name must contain only letters" }),
+
+      presentAddress: z
+        .string()
+        .nonempty({ message: 'Present address is required' }),
+      permanentAddress: z
+        .string()
+        .nonempty({ message: 'Permanent address is required' }),
+
+      guardian: z.object({
+        fatherName: z.string().nonempty({ message: 'Father name is required' }),
+        fatherOccupation: z
+          .string()
+          .nonempty({ message: 'Father occupation is required' }),
+        fatherContactNo: z
+          .string()
+          .nonempty({ message: 'Father contact is required' }),
+        motherName: z.string().nonempty({ message: 'Mother name is required' }),
+        motherOccupation: z
+          .string()
+          .nonempty({ message: 'Mother occupation is required' }),
+        motherContactNo: z
+          .string()
+          .nonempty({ message: 'Mother contact is required' }),
+      }),
+
+      localGuardian: z.object({
+        name: z
+          .string()
+          .nonempty({ message: 'Local guardian name is required' }),
+        occupation: z.string().nonempty({ message: 'Occupation is required' }),
+        contactNo: z
+          .string()
+          .nonempty({ message: 'Contact number is required' }),
+        address: z.string().nonempty({ message: 'Address is required' }),
+      }),
+
+      profileImg: z.string().optional(),
+      addmissionSemester: z.string(),
+    }),
   }),
-
-  gender: genderEnum.refine(
-    val => genderEnum.options.includes(val),
-    { message: "Gender is not supported" }
-  ),
-
-  dateOfBirth: z.string().optional(),
-
-  email: z.string().email({ message: "Email is not valid" }),
-
-  contactNo: z.string().nonempty({ message: "Contact number is required" }),
-  emergencyContactNo: z.string().nonempty({ message: "Emergency contact is required" }),
-
-  bloodGroup: bloodGroupEnum.refine(
-    val => bloodGroupEnum.options.includes(val),
-    { message: "Blood group is not valid" }
-  ),
-
-  presentAddress: z.string().nonempty({ message: "Present address is required" }),
-  permanentAddress: z.string().nonempty({ message: "Permanent address is required" }),
-
-  guardian: z.object({
-    fatherName: z.string().nonempty({ message: "Father name is required" }),
-    fatherOccupation: z.string().nonempty({ message: "Father occupation is required" }),
-    fatherContactNo: z.string().nonempty({ message: "Father contact is required" }),
-    motherName: z.string().nonempty({ message: "Mother name is required" }),
-    motherOccupation: z.string().nonempty({ message: "Mother occupation is required" }),
-    motherContactNo: z.string().nonempty({ message: "Mother contact is required" }),
-  }),
-
-  localGuardian: z.object({
-    name: z.string().nonempty({ message: "Local guardian name is required" }),
-    occupation: z.string().nonempty({ message: "Occupation is required" }),
-    contactNo: z.string().nonempty({ message: "Contact number is required" }),
-    address: z.string().nonempty({ message: "Address is required" }),
-  }),
-
-
-  profileImg: z.string().optional(),
-   addmissionSemester:z.string()
-  
-   })
 })
-
-})
-
-
-
-
-
-
-
 
 // {
-  
+
 //     "password": "SecurePass123",
 //     "student": {
 //       "name": {
@@ -111,5 +128,5 @@ export const studentZodSchema = z.object({
 //       "profileImg": "https://example.com/images/profile.png",
 //       "addmissionSemester": "68b3fffd1b0025f5a206bf46"
 //     }
-  
+
 // }

@@ -1,9 +1,3 @@
-export type TacademicFaculty={
-     name:String,
-     
-
-
-
-
-
+export type TacademicFaculty = {
+  name: String
 }

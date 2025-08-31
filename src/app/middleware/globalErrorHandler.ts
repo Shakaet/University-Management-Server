@@ -1,19 +1,17 @@
+import express, { NextFunction, Request, Response } from 'express'
 
-
-import express, {  NextFunction, Request, Response } from 'express'
-
-
-export let globarError= (err:any,req:Request,res:Response,next:NextFunction)=>{
-
-
-  const statusCode=500
-  const message= err.message || "Something Went Wrong"
+export let globarError = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const statusCode = 500
+  const message = err.message || 'Something Went Wrong'
 
   return res.status(statusCode).json({
-
-    status:false,
+    status: false,
     message,
-    error:err
+    error: err,
   })
-  
 }
