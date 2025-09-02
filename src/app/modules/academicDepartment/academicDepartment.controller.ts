@@ -1,25 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
 import { catchAsynFunction } from '../../utils/catchAsync'
-import {
-  createAcademicFacultyToDb,
-  findAllAcademicFaculty,
-  findOneAcademicFaculty,
-  updateAcademicFaculty,
-} from './academicFaculty.service'
+import { createAcademicDepartmentToDb, findAllAcademicDepartment, findOneAcademicDepartment, updateAcademicDepartment } from './academicDepartment.service'
 
 // RequestHandler dile autometic req,res,next er type declard hoye jabe
-export const createAcademicFacultyController = catchAsynFunction(
+export const createAcademicDepartmentController = catchAsynFunction(
   async (req, res) => {
     let payload = req.body
 
-    let result = await createAcademicFacultyToDb(payload)
+    let result = await createAcademicDepartmentToDb(payload)
 
     // send response
 
     res.status(201).json({
       status: true,
       message:
-        (result as any)?.message || 'Academic Faculty created successfully',
+        (result as any)?.message || 'Academic Department created successfully',
       data: result,
     })
 
@@ -31,23 +26,23 @@ export const createAcademicFacultyController = catchAsynFunction(
   },
 )
 
-export let findAllAcademicFacultyController = async (
+export let findAllAcademicDepartmentController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let result = await findAllAcademicFaculty()
+  let result = await findAllAcademicDepartment()
 
   res.send(result)
 }
 
-export let findOneAcademicFacultyController = async (
+export let findOneAcademicDepartmentController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let id = req.params.FacultyId
-  let result = await findOneAcademicFaculty(id)
+  let id = req.params.DepartmentId
+  let result = await findOneAcademicDepartment(id)
 
   res.send(result)
 }
@@ -56,16 +51,16 @@ export let updateAcademicFacultyController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  let id = req.params.FacultyId
+  let id = req.params.DepartmentId
   let data = req.body
-  let result = await updateAcademicFaculty(id, data)
+  let result = await updateAcademicDepartment(id, data)
 
   // res.send(result)
 
   res.status(200).json({
     status: true,
     message:
-      (result as any)?.message || 'Academic Faculty updated successfully',
+      (result as any)?.message || 'Academic Department updated successfully',
     data: result,
   })
 }
