@@ -3,6 +3,14 @@ import { academicDepartmentModel } from "./academicDepartment.model"
 
 
 export let createAcademicDepartmentToDb = async (payload: TacademicDepartment) => {
+
+
+
+    // let isExist=await academicDepartmentModel.findOne({name:payload.name})
+
+    // if(isExist){
+    //      throw new Error("Department Already Existed")
+    // }
   let result = await academicDepartmentModel.create(payload)
 
   return result
