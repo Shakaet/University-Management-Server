@@ -90,6 +90,7 @@ export const studentZodSchema = z.object({
 
       profileImg: z.string().optional(),
       addmissionSemester: z.string(),
+       academicDepartment:z.string()
     }),
   }),
 })

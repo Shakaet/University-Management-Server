@@ -5,7 +5,7 @@ import { TacademicDepartment } from './academicDepartment.interface'
 const academicDepartmentSchema = new Schema<TacademicDepartment>(
   {
     name: { type: String, required: true, unique: true },
-    academicFaculty:{type:Schema.Types.ObjectId,required:true}
+    academicFaculty:{type:Schema.Types.ObjectId,required:true,ref:"academicFaculty"}
   },
   { timestamps: true },
 )

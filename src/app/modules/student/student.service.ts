@@ -1,3 +1,4 @@
+import { path } from 'path';
 // import { Student} from "./student.interface";
 import { studentmodel } from './student.model'
 
@@ -27,14 +28,30 @@ import { studentmodel } from './student.model'
 // }
 
 const getAllStudentFromDB = async () => {
-  const result = await studentmodel.find()
+  const result = await studentmodel.find().populate("addmissionSemester")
+
+  // cause academic department abar populate kore academicFaculty ke
+  .populate({
+    path:"academicDepartment",
+    populate:{
+      path:"academicFaculty"
+    }
+  })
   return result
 }
 
 const getSpecificStudentsFromDb = async (id: string) => {
   // const result=await studentmodel.findOne({id})
 
-  const result = await studentmodel.aggregate([{ $match: { id } }])
+  const result = await studentmodel.findById({_id:id}).populate("addmissionSemester")
+
+  // cause academic department abar populate kore academicFaculty ke
+  .populate({
+    path:"academicDepartment",
+    populate:{
+      path:"academicFaculty"
+    }
+  })
 
   return result
 }

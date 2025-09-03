@@ -125,6 +125,11 @@ export const studentSchema = new Schema<Student, StudentModel, StudentMethods>(
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
     },
+    academicDepartment:{
+       type: Schema.Types.ObjectId,
+      ref: 'academicDepartment',
+
+    },
     isDeleted: { type: Boolean, default: false },
   },
   {

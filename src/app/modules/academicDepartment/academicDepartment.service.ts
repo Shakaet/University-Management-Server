@@ -17,13 +17,13 @@ export let createAcademicDepartmentToDb = async (payload: TacademicDepartment) =
 }
 
 export let findAllAcademicDepartment = async () => {
-  let result = await academicDepartmentModel.find()
+  let result = await academicDepartmentModel.find().populate("academicFaculty")
 
   return result
 }
 
 export let findOneAcademicDepartment = async (id: string) => {
-  let result = await academicDepartmentModel.findOne({ _id: id })
+  let result = await academicDepartmentModel.findOne({ _id: id }).populate("academicFaculty")
 
   return result
 }
