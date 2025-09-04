@@ -1,3 +1,4 @@
+import { Student } from './../student/student.interface';
 import { TacademicSemester } from './../academicSem/academicSem.interface'
 import { object } from 'joi'
 import config from '../../config'
@@ -9,6 +10,7 @@ import { v4 as uuid } from 'uuid'
 import { AcademicSemesterModel } from '../academicSem/academicSem.model'
 import { generatedStudentId } from './user.utils'
 import { AppError } from '../../Errors/AppError'
+import mongoose from 'mongoose'
 
 export const createStudentToDatabase = async (
   password: string,
@@ -35,21 +37,56 @@ export const createStudentToDatabase = async (
   if (!studentsAcademicSemester) {
     throw new AppError(404,'AcademicId is not valid',"")
   }
+  let email=student.email
+  let isstudent=await studentmodel.findOne({email})
 
-  userData.id = await generatedStudentId(studentsAcademicSemester)
+  if(isstudent){
+    throw new AppError(404,"student already exists","")
+  }
+
+
+  let session=await mongoose.startSession()
+
+
+  try{
+
+     session.startTransaction()
+
+      userData.id = await generatedStudentId(studentsAcademicSemester)
   // userData.id=uuid()
-
+   
+  // transaction 1
   //create users
-  let newUser = await UserModel.create(userData)
+  let newUser = await UserModel.create([userData],{session})
 
   // create students
 
-  if (Object.keys(newUser).length) {
-    student.id = newUser.id
-    student.user = newUser._id
+  if (!newUser.length) {
+    throw new AppError(404,"user not created","")
+   
+  }
+   student.id = newUser[0].id
+    student.user = newUser[0]._id
+    
+    // transaction 2
+    let newStudent = await studentmodel.create([student],{session})
 
-    let newStudent = await studentmodel.create(student)
+    if(!newStudent.length){
+      throw new AppError(404,"student not created","")
+    }
+
+     await session.commitTransaction()
+    await session.endSession()
+
 
     return newStudent
+
+   
+  }catch(err){
+    await session.abortTransaction()
+    await session.endSession()
+
   }
+
+
 }
