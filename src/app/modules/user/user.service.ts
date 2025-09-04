@@ -8,6 +8,7 @@ import { studentmodel } from '../student/student.model'
 import { v4 as uuid } from 'uuid'
 import { AcademicSemesterModel } from '../academicSem/academicSem.model'
 import { generatedStudentId } from './user.utils'
+import { AppError } from '../../Errors/AppError'
 
 export const createStudentToDatabase = async (
   password: string,
@@ -32,7 +33,7 @@ export const createStudentToDatabase = async (
   )
 
   if (!studentsAcademicSemester) {
-    throw new Error('AcademicId is not valid')
+    throw new AppError(404,'AcademicId is not valid',"")
   }
 
   userData.id = await generatedStudentId(studentsAcademicSemester)
