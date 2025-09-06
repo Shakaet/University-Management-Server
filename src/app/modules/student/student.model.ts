@@ -10,6 +10,7 @@ import {
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import config from '../../config'
+import { AppError } from '../../Errors/AppError'
 
 const nameSchema = new Schema<Name>({
   firstName: {
@@ -202,6 +203,11 @@ studentSchema.statics.myStaticMethod = async function (id: string) {
   const result = await studentmodel.findOne({ id })
   return result
 }
+
+
+
+
+
 
 //. Create a Model.
 export const studentmodel = model<Student, StudentModel>(

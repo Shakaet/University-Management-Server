@@ -80,15 +80,20 @@ export const getSpecificStudent: RequestHandler = catchAsynFunction(
 
 export const deletedSpecificStudent: RequestHandler = catchAsynFunction(
   async (req, res, next) => {
-    const id = req.params.id
+   try{
+     const id = req.params.id
 
     const result = await studentServices.deletedSpecificStudentfromDb(id)
 
     res.status(200).json({
       status: true,
-      messsage: 'data find',
+      messsage: 'data sucessfully deleted',
       data: result,
     })
+   }catch(err){
+    next(err)
+
+   }
   },
 )
 

@@ -1,6 +1,9 @@
 import { path } from 'path';
 // import { Student} from "./student.interface";
 import { studentmodel } from './student.model'
+import mongoose from 'mongoose';
+import { UserModel } from '../user/user.model';
+import { AppError } from '../../Errors/AppError';
 
 // const createStudentToDatabase=async(student:Student)=>{
 
@@ -57,10 +60,51 @@ const getSpecificStudentsFromDb = async (id: string) => {
 }
 
 const deletedSpecificStudentfromDb = async (id: string) => {
-  const result = await studentmodel.updateOne({ id }, { isDeleted: true })
 
-  return result
+
+
+let isStudentExist=await studentmodel.findOne({id})
+if(!isStudentExist){
+  throw new AppError(404,"students not found","")
 }
+  const session = await mongoose.startSession()
+
+  try {
+    session.startTransaction()
+
+    // transaction 1
+    const deletedStudent = await studentmodel.findOneAndUpdate(
+      { id },   // custom field
+      { isDeleted: true },
+      { new: true, session }
+    )
+
+    if (!deletedStudent) {
+      throw new AppError(400, "Student Update Failed", "")
+    }
+
+    // transaction 2
+    const deletedUser = await UserModel.findOneAndUpdate(
+      { id },   // custom field
+      { isDeleted: true },
+      { new: true, session }
+    )
+
+    if (!deletedUser) {
+      throw new AppError(400, "User Update Failed", "")
+    }
+
+    await session.commitTransaction()
+    await session.endSession()
+
+    return deletedStudent
+  } catch (err) {
+    await session.abortTransaction()
+    await session.endSession()
+    
+  }
+}
+
 
 const updateSpecificStudentfromDb = async (id: string, email: string) => {
   const result = await studentmodel.updateOne({ id }, { $set: { email } })
