@@ -95,6 +95,83 @@ export const studentZodSchema = z.object({
   }),
 })
 
+
+// Zod schema for updating Student (all optional)
+export const updatedStudentsZodSchema = z.object({
+  body: z.object({
+    // password: z.string().max(20).optional(),
+
+    student: z
+      .object({
+        name: z
+          .object({
+            firstName: z
+              .string()
+              .min(2, { message: 'First name too small' })
+              .refine(val => val.charAt(0) === val.charAt(0).toUpperCase(), {
+                message: 'First name must start with a capital letter',
+              })
+              .optional(),
+            middleName: z.string().optional(),
+            lastName: z
+              .string()
+              .regex(/^[A-Za-z]+$/, {
+                message: 'Last name must contain only letters',
+              })
+              .optional(),
+          })
+          .optional(),
+
+        gender: genderEnum
+          .refine(val => genderEnum.options.includes(val), {
+            message: 'Gender is not supported',
+          })
+          .optional(),
+
+        dateOfBirth: z.string().optional(),
+
+        email: z.string().email({ message: 'Email is not valid' }).optional(),
+
+        contactNo: z.string().optional(),
+        emergencyContactNo: z.string().optional(),
+
+        bloodGroup: bloodGroupEnum
+          .refine(val => bloodGroupEnum.options.includes(val), {
+            message: 'Blood group is not valid',
+          })
+          .optional(),
+
+        presentAddress: z.string().optional(),
+        permanentAddress: z.string().optional(),
+
+        guardian: z
+          .object({
+            fatherName: z.string().optional(),
+            fatherOccupation: z.string().optional(),
+            fatherContactNo: z.string().optional(),
+            motherName: z.string().optional(),
+            motherOccupation: z.string().optional(),
+            motherContactNo: z.string().optional(),
+          })
+          .optional(),
+
+        localGuardian: z
+          .object({
+            name: z.string().optional(),
+            occupation: z.string().optional(),
+            contactNo: z.string().optional(),
+            address: z.string().optional(),
+          })
+          .optional(),
+
+        profileImg: z.string().optional(),
+        addmissionSemester: z.string().optional(),
+        academicDepartment: z.string().optional(),
+      })
+      .optional(),
+  }),
+})
+
 // {
 
 //     "password": "SecurePass123",

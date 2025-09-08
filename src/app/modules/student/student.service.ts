@@ -4,6 +4,7 @@ import { studentmodel } from './student.model'
 import mongoose from 'mongoose';
 import { UserModel } from '../user/user.model';
 import { AppError } from '../../Errors/AppError';
+import { Student } from './student.interface';
 
 // const createStudentToDatabase=async(student:Student)=>{
 
@@ -46,7 +47,7 @@ const getAllStudentFromDB = async () => {
 const getSpecificStudentsFromDb = async (id: string) => {
   // const result=await studentmodel.findOne({id})
 
-  const result = await studentmodel.findById({_id:id}).populate("addmissionSemester")
+  const result = await studentmodel.findOne({id}).populate("addmissionSemester")
 
   // cause academic department abar populate kore academicFaculty ke
   .populate({
@@ -106,8 +107,8 @@ if(!isStudentExist){
 }
 
 
-const updateSpecificStudentfromDb = async (id: string, email: string) => {
-  const result = await studentmodel.updateOne({ id }, { $set: { email } })
+const updateSpecificStudentfromDb = async (id: string, payload: Partial<Student>) => {
+  const result = await studentmodel.updateOne({ id },  payload )
 
   return result
 }

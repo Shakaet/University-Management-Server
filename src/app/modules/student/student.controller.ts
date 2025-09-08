@@ -101,9 +101,9 @@ export const updateStudent: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
 
-    const email = req.body.email
+    const {student} = req.body
 
-    const result = await studentServices.updateSpecificStudentfromDb(id, email)
+    const result = await studentServices.updateSpecificStudentfromDb(id,student)
 
     res.status(200).json({
       status: true,

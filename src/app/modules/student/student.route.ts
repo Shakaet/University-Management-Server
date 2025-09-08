@@ -6,6 +6,8 @@ import {
   getSpecificStudent,
   updateStudent,
 } from './student.controller'
+import { validateRequest } from '../../middleware/validateRequest'
+import { updatedStudentsZodSchema } from './validation.jod'
 
 const router = express.Router()
 
@@ -19,6 +21,6 @@ router.get('/specificStudent/:id', getSpecificStudent)
 
 router.delete('/specificStudent/:id', deletedSpecificStudent)
 
-router.patch('/updateStudent/:id', updateStudent)
+router.patch('/updateStudent/:id',validateRequest(updatedStudentsZodSchema), updateStudent)
 
 export const studentRoutes = router
