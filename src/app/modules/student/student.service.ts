@@ -102,13 +102,59 @@ if(!isStudentExist){
   } catch (err) {
     await session.abortTransaction()
     await session.endSession()
+    throw new Error("failed to Delete Students")
     
   }
 }
 
 
 const updateSpecificStudentfromDb = async (id: string, payload: Partial<Student>) => {
-  const result = await studentmodel.updateOne({ id },  payload )
+
+
+  let {name,guardian,localGuardian,...remainingStudentData}=payload
+
+  // client theke pathabo
+
+  /*
+  guardian:{
+
+  "fatherOccupation":"Teacher"
+  }
+
+  eta mutate hoye jabe tai etak evabe transform korte hobe
+
+  "guardian.fatherOccupation:"Teacher"
+
+  */
+
+
+  let modifiedData:Record<string,unknown>={...remainingStudentData}
+
+
+  if(name && Object.keys(name).length){
+
+    for(let[key,value] of Object.entries(name) ){
+      modifiedData[`name.${key}`]=value
+    }
+  }
+
+  if(guardian && Object.keys(guardian).length){
+
+    for(let[key,value] of Object.entries(guardian) ){
+      modifiedData[`guardian.${key}`]=value
+    }
+  }
+
+  if(localGuardian && Object.keys(localGuardian).length){
+
+    for(let[key,value] of Object.entries(localGuardian) ){
+      modifiedData[`localGuardian.${key}`]=value
+    }
+  }
+
+  const result = await studentmodel.updateOne({ id },  modifiedData,{
+    runValidators:true
+  } )
 
   return result
 }

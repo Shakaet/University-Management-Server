@@ -85,6 +85,7 @@ export const createStudentToDatabase = async (
   }catch(err){
     await session.abortTransaction()
     await session.endSession()
+    throw new Error("failed to Create Students")
 
   }
 
