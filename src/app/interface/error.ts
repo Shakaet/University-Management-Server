@@ -4,7 +4,7 @@
   }[]
 
   export type TGenericErrorResponse={
-      statusCode:number,
+      StatusCode:number,
       message:string,
       errorSource:TerrorSource
   }

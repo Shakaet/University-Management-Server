@@ -4,7 +4,7 @@ import { TerrorSource, TGenericErrorResponse } from "../interface/error";
 
 export let handleMongooseValidationError=(err:mongoose.Error.ValidationError):TGenericErrorResponse=>{
 
-     let statusCode = 400;
+     let StatusCode = 400;
     
       let errorSource: TerrorSource = Object.values(err.errors).map(
   (val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
@@ -16,7 +16,7 @@ export let handleMongooseValidationError=(err:mongoose.Error.ValidationError):TG
 );
     
       return {
-        statusCode,
+        StatusCode,
         message:"Mongoose Validation Error",
         errorSource
       };

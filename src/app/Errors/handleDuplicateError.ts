@@ -17,10 +17,10 @@ export let handleDuplicateError=(err:any):TGenericErrorResponse=>{
 
 
 
-     let statusCode = 400;
+     let StatusCode = 400;
 
      return {
-        statusCode,
+        StatusCode,
         message:"Duplicate 11000 Validation Error",
         errorSource
       };

@@ -7,9 +7,9 @@ export let handleCastError=(err:mongoose.Error.CastError):TGenericErrorResponse=
     path:err?.path,
     message:err?.message
    }]
-     let statusCode = 400;
+     let StatusCode = 400;
      return {
-        statusCode,
+        StatusCode,
         message:"Cast Validation Error",
         errorSource
       };

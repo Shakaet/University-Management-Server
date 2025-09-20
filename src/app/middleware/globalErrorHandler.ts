@@ -9,6 +9,7 @@ import { handlerZod } from '../Errors/zodEoor';
 import { handleMongooseValidationError } from '../Errors/handleMongooseValidationError';
 import { handleCastError } from '../Errors/handleCastError';
 import { handleDuplicateError } from '../Errors/handleDuplicateError';
+import { AppError } from '../Errors/AppError';
 
 // export let globarError = (
 //   err: any,
@@ -61,7 +62,7 @@ export let globarError:ErrorRequestHandler = (
 
     let simplifyZod=handlerZod(err)
     // console.log(simplifyZod)
-      statusCode=simplifyZod?.statusCode
+      statusCode=simplifyZod?.StatusCode
       message=simplifyZod?.message
       errorSource=simplifyZod?.errorSource
 
@@ -69,14 +70,14 @@ export let globarError:ErrorRequestHandler = (
     // console.log("ami mongoose Error")
     let simplifymongoose=handleMongooseValidationError(err)
     // console.log(simplifyZod)
-      statusCode=simplifymongoose?.statusCode
+      statusCode=simplifymongoose?.StatusCode
       message=simplifymongoose?.message
       errorSource=simplifymongoose?.errorSource
 
   }else if(err.name==="CastError"){
 
     let simplifyCastError=handleCastError(err)
-       statusCode=simplifyCastError?.statusCode
+       statusCode=simplifyCastError?.StatusCode
       message=simplifyCastError?.message
       errorSource=simplifyCastError?.errorSource
 
@@ -84,10 +85,32 @@ export let globarError:ErrorRequestHandler = (
   }else if(err.code===11000){
 
     let simplifyCastError=handleDuplicateError(err)
-       statusCode=simplifyCastError?.statusCode
+       statusCode=simplifyCastError?.StatusCode
       message=simplifyCastError?.message
       errorSource=simplifyCastError?.errorSource
 
+
+  }else if(err instanceof AppError){
+
+  
+       statusCode=err?.StatusCode
+       
+      message=err?.message
+      errorSource=[{
+        path:"",
+        message:err?.message
+      }]
+
+  }else if(err instanceof Error){
+
+  
+      //  statusCode=err?.StatusCode
+       
+      message=err?.message
+      errorSource=[{
+        path:"",
+        message:err?.message
+      }]
 
   }
 
