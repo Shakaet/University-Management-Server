@@ -8,6 +8,7 @@ import config from '../config';
 import { handlerZod } from '../Errors/zodEoor';
 import { handleMongooseValidationError } from '../Errors/handleMongooseValidationError';
 import { handleCastError } from '../Errors/handleCastError';
+import { handleDuplicateError } from '../Errors/handleDuplicateError';
 
 // export let globarError = (
 //   err: any,
@@ -75,6 +76,14 @@ export let globarError:ErrorRequestHandler = (
   }else if(err.name==="CastError"){
 
     let simplifyCastError=handleCastError(err)
+       statusCode=simplifyCastError?.statusCode
+      message=simplifyCastError?.message
+      errorSource=simplifyCastError?.errorSource
+
+
+  }else if(err.code===11000){
+
+    let simplifyCastError=handleDuplicateError(err)
        statusCode=simplifyCastError?.statusCode
       message=simplifyCastError?.message
       errorSource=simplifyCastError?.errorSource
