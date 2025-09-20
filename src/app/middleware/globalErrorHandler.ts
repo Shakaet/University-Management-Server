@@ -7,6 +7,7 @@ import { TerrorSource } from '../interface/error';
 import config from '../config';
 import { handlerZod } from '../Errors/zodEoor';
 import { handleMongooseValidationError } from '../Errors/handleMongooseValidationError';
+import { handleCastError } from '../Errors/handleCastError';
 
 // export let globarError = (
 //   err: any,
@@ -70,6 +71,14 @@ export let globarError:ErrorRequestHandler = (
       statusCode=simplifymongoose?.statusCode
       message=simplifymongoose?.message
       errorSource=simplifymongoose?.errorSource
+
+  }else if(err.name==="CastError"){
+
+    let simplifyCastError=handleCastError(err)
+       statusCode=simplifyCastError?.statusCode
+      message=simplifyCastError?.message
+      errorSource=simplifyCastError?.errorSource
+
 
   }
 

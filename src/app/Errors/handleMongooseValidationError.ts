@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { TerrorSource } from "../interface/error";
+import { TerrorSource, TGenericErrorResponse } from "../interface/error";
 
 
-export let handleMongooseValidationError=(err:mongoose.Error.ValidationError)=>{
+export let handleMongooseValidationError=(err:mongoose.Error.ValidationError):TGenericErrorResponse=>{
 
      let statusCode = 400;
     

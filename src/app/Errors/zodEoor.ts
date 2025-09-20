@@ -1,7 +1,7 @@
 import { ZodError, ZodIssue } from "zod";
-import { TerrorSource } from "../interface/error";
+import { TerrorSource, TGenericErrorResponse } from "../interface/error";
 
-export let handlerZod = (err: ZodError) => {
+export let handlerZod = (err: ZodError):TGenericErrorResponse => {
   let statusCode = 400;
 
   let errorSource:TerrorSource=err.issues.map((issue:ZodIssue)=>{
