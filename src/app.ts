@@ -6,6 +6,7 @@ import { userRoutes } from './app/modules/user/user.route'
 import { globarError } from './app/middleware/globalErrorHandler'
 import { notFound } from './app/middleware/notfound'
 import router from './app/routes'
+import { promise } from 'zod'
 
 // const port = 3000
 
@@ -22,6 +23,8 @@ app.use('/api/v1', router)
 // app.use("/api/v1/users",userRoutes)
 
 app.get('/', (req: Request, res: Response) => {
+
+  // Promise.reject()
   res.send('Hello World!')
 })
 
