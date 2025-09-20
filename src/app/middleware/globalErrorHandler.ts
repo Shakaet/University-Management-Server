@@ -5,6 +5,8 @@ import { ErrorRequestHandler } from "express"
 import { ZodError, ZodIssue } from 'zod';
 import { TerrorSource } from '../interface/error';
 import config from '../config';
+import { handlerZod } from '../Errors/zodEoor';
+import { handleMongooseValidationError } from '../Errors/handleMongooseValidationError';
 
 // export let globarError = (
 //   err: any,
@@ -47,23 +49,6 @@ export let globarError:ErrorRequestHandler = (
     }
   ]
 
-let handlerZod = (err: ZodError) => {
-  let statusCode = 400;
-
-  let errorSource:TerrorSource=err.issues.map((issue:ZodIssue)=>{
-      return{
-        path:issue.path[issue.path.length-1],
-        message:issue.message,
-      }
-
-    })
-
-  return {
-    statusCode,
-    message:"Zod Validation Error",
-    errorSource
-  };
-};
 
   if(err instanceof ZodError){
     // statusCode=200,
@@ -78,6 +63,14 @@ let handlerZod = (err: ZodError) => {
       message=simplifyZod?.message
       errorSource=simplifyZod?.errorSource
 
+  }else if(err.name=="ValidationError"){
+    // console.log("ami mongoose Error")
+    let simplifymongoose=handleMongooseValidationError(err)
+    // console.log(simplifyZod)
+      statusCode=simplifymongoose?.statusCode
+      message=simplifymongoose?.message
+      errorSource=simplifymongoose?.errorSource
+
   }
 
 
@@ -86,6 +79,7 @@ let handlerZod = (err: ZodError) => {
     status: false,
     message,
     errorSource,
+    // err,
     stack: config.NODE_ENV==="development" ? err?.stack:null
     // error: err.issues[0].path,
 

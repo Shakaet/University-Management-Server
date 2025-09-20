@@ -9,7 +9,9 @@ import { createAcademicDepartmentController, findAllAcademicDepartmentController
 
 let router = Router()
 
-router.post('/create-acamedic-Department',validateRequest(createAcademicDepartmentSchema), createAcademicDepartmentController)
+router.post('/create-acamedic-Department',
+    // validateRequest(createAcademicDepartmentSchema), 
+    createAcademicDepartmentController)
 
 router.get('/allAcademicDepartment',findAllAcademicDepartmentController )
 router.get('/AcademicDepartment/:DepartmentId', findOneAcademicDepartmentController)
