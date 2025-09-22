@@ -53,7 +53,9 @@ import { catchAsynFunction } from '../../utils/catchAsync'
 
 export const getAllStudents: RequestHandler = catchAsynFunction(
   async (req, res, next) => {
-    const result = await studentServices.getAllStudentFromDB()
+
+    // console.log(req.query)
+    const result = await studentServices.getAllStudentFromDB(req.query)
 
     res.status(201).json({
       success: true,

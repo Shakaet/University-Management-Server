@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { UserModel } from '../user/user.model';
 import { AppError } from '../../Errors/AppError';
 import { Student } from './student.interface';
+import { fi } from 'zod/v4/locales/index.cjs';
 
 // const createStudentToDatabase=async(student:Student)=>{
 
@@ -31,8 +32,64 @@ import { Student } from './student.interface';
 
 // }
 
-const getAllStudentFromDB = async () => {
-  const result = await studentmodel.find().populate("addmissionSemester")
+const getAllStudentFromDB = async (query:Record<string,unknown>) => {
+
+
+
+   let {searchTerm,email,sortField,sortOrder,limit}=query
+
+
+   
+ // {email:{$regex:query.searchTerm,$options:"i"}}
+
+//  console.log(sortField,sortOrder,limit)
+
+
+//  let searchTerm=""
+//  if(query.searchTerm){
+
+//   searchTerm=query.searchTerm as string
+//  }
+
+
+ // evabeo kora jay
+
+// {
+//   $or: [
+//     { email: { $regex: "john", $options: "i" } },
+//     { "name.firstName": { $regex: "john", $options: "i" } },
+//     { presentAddress: { $regex: "john", $options: "i" } }
+//   ]
+// }
+
+
+let andConditions = [];
+
+if (searchTerm) {
+  andConditions.push({
+    $or: ["email", "name.firstName", "presentAddress"].map(field => ({
+      [field]: { $regex: searchTerm, $options: "i" }
+    }))
+  });
+}
+
+if (email) {
+  andConditions.push({ email: email });
+}
+
+
+
+const querys = andConditions.length > 0 ? { $and: andConditions } : {};
+
+// Default sort
+const sort :Record<string, 1 | -1> = {};
+if (sortField) {
+  sort[sortField as string] = sortOrder === "desc" ? -1 : 1; // 1 = asc, -1 = desc
+}
+const limitNum = parseInt(limit as string) || 20; // default 20
+  const result = await studentmodel.find(
+    querys
+  ).sort(sort).limit(limitNum).populate("addmissionSemester")
 
   // cause academic department abar populate kore academicFaculty ke
   .populate({
