@@ -93,13 +93,15 @@ const pageNum = parseInt(page as string) || 1; // default 1
 const skipNum = (pageNum - 1) * limitNum;
 
  // 🎯 Field limiting (projection)
-  let projection: string = "";
+  let projection: string = '-__v';
   if (field) {
     projection = (field as string)
       .split(",")
       .map(f => f.trim())
       .join(" ");
   }
+  
+
   const result = await studentmodel.find(
     querys
   ).sort(sort).select(projection).skip(skipNum).limit(limitNum).populate("addmissionSemester")
