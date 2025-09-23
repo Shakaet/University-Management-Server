@@ -36,7 +36,7 @@ const getAllStudentFromDB = async (query:Record<string,unknown>) => {
 
 
 
-   let {searchTerm,email,sortField,sortOrder,limit}=query
+   let {searchTerm,email,sortField,sortOrder,limit,page,field}=query
 
 
    
@@ -86,10 +86,23 @@ const sort :Record<string, 1 | -1> = {};
 if (sortField) {
   sort[sortField as string] = sortOrder === "desc" ? -1 : 1; // 1 = asc, -1 = desc
 }
+
+// Pagination
 const limitNum = parseInt(limit as string) || 20; // default 20
+const pageNum = parseInt(page as string) || 1; // default 1
+const skipNum = (pageNum - 1) * limitNum;
+
+ // 🎯 Field limiting (projection)
+  let projection: string = "";
+  if (field) {
+    projection = (field as string)
+      .split(",")
+      .map(f => f.trim())
+      .join(" ");
+  }
   const result = await studentmodel.find(
     querys
-  ).sort(sort).limit(limitNum).populate("addmissionSemester")
+  ).sort(sort).select(projection).skip(skipNum).limit(limitNum).populate("addmissionSemester")
 
   // cause academic department abar populate kore academicFaculty ke
   .populate({
