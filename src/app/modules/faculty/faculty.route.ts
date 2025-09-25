@@ -18,6 +18,6 @@ router.get('/faculty/:id', FacultyControllers.getSingleFaculty);
 
 // router.delete('faculty/:id', FacultyControllers.deleteFaculty);
 
-// router.get('/faculty', FacultyControllers.getAllFaculties);
+router.get('/faculty', FacultyControllers.getAllFaculties);
 
 export const FacultyRoutes = router

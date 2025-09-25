@@ -16,15 +16,15 @@ const getSingleFaculty = catchAsynFunction(async (req, res) => {
     })
 });
 
-// const getAllFaculties = catchAsynFunction(async (req, res) => {
-//   const result = await FacultyServices.getAllFacultiesFromDB(req.query);
+const getAllFaculties = catchAsynFunction(async (req, res) => {
+  const result = await FacultyServices.getAllFacultiesFromDB(req.query);
 
-//   res.status(200).json({
-//       status: true,
-//       messsage: 'faculty are retrive Successfully',
-//       data: result,
-//     })
-// });
+  res.status(200).json({
+      status: true,
+      messsage: 'faculty are retrive Successfully',
+      data: result,
+    })
+});
 
 // const updateFaculty = catchAsynFunction(async (req, res) => {
 //   const { id } = req.params;
@@ -50,7 +50,7 @@ const getSingleFaculty = catchAsynFunction(async (req, res) => {
 // });
 
 export const FacultyControllers = {
-//   getAllFaculties,
+  getAllFaculties,
   getSingleFaculty,
 //   deleteFaculty,
 //   updateFaculty,
