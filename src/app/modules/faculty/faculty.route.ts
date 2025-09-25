@@ -10,13 +10,13 @@ const router = Router()
 
 router.get('/faculty/:id', FacultyControllers.getSingleFaculty);
 
-// router.patch(
-//   'faculty/:id',
-//   validateRequest(updateFacultyZodSchema),
-//   FacultyControllers.updateFaculty,
-// );
+router.patch(
+  '/faculty/:id',
+  validateRequest(updateFacultyZodSchema),
+  FacultyControllers.updateFaculty,
+);
 
-// router.delete('faculty/:id', FacultyControllers.deleteFaculty);
+router.delete('/faculty/:id', FacultyControllers.deleteFaculty);
 
 router.get('/faculty', FacultyControllers.getAllFaculties);
 

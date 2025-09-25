@@ -1,5 +1,8 @@
+import mongoose from "mongoose";
 import { catchAsynFunction } from "../../utils/catchAsync";
+import { TFaculty } from "./faculty.interface";
 import { Faculty } from "./faculty.model";
+import { UserModel } from "../user/user.model";
 
 export const getSingleFacultyFromDB = async (id: string) => {
   const result = await Faculty.findById(id).populate('academicDepartment');
@@ -57,11 +60,76 @@ const skipNum = (pageNum - 1) * limitNum;
   return result
 };
 
+const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
+  const { name, ...remainingFacultyData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingFacultyData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+
+  const result = await Faculty.findByIdAndUpdate(id, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
+
+const deleteFacultyFromDB = async (id: string) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const deletedFaculty = await Faculty.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true, session },
+    );
+
+    if (!deletedFaculty) {
+      throw new Error('Failed to delete faculty');
+    }
+
+    // get user _id from deletedFaculty
+    const userId = deletedFaculty.user;
+
+    const deletedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true, session },
+    );
+
+    if (!deletedUser) {
+      throw new Error('Failed to delete user');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return deletedFaculty;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
+
+
+
 
 
 export const FacultyServices = {
   
   getSingleFacultyFromDB,
-  getAllFacultiesFromDB
+  getAllFacultiesFromDB,
+  updateFacultyIntoDB,
+  deleteFacultyFromDB
   
 };
