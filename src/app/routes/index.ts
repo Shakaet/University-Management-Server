@@ -4,6 +4,7 @@ import { userRoutes } from '../modules/user/user.route'
 import { AcamedicsemRoutes } from '../modules/academicSem/academicSem.route'
 import { AcamedicFacultyRoutes } from '../modules/academicFaculty/academinFaculty.route'
 import { AcamedicDepartmentRoutes } from '../modules/academicDepartment/academicDepartment.route'
+import { FacultyRoutes } from '../modules/faculty/faculty.route'
 
 
 let router = Router()
@@ -29,6 +30,10 @@ let AllRoutes = [
     path: '/acamedicDepartment',
     routes: AcamedicDepartmentRoutes,
   },
+  {
+    path: '/faculty',
+    routes: FacultyRoutes,
+  }
 ]
 
 AllRoutes.forEach(route => router.use(route.path, route.routes))
