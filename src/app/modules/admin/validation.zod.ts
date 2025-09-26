@@ -8,8 +8,11 @@ export const userNameSchema = z.object({
 
 export const createAdminSchema = z.object({
   body: z.object({
-    id: z.string().min(1, "ID is required"),
-    user: z.string().min(1, "User ObjectId is required"), // এখানে string, পরে mongoose দিয়ে validate হবে
+
+     password: z.string().max(20),
+
+     admin:z.object({
+        
     designation: z.string().min(1, "Designation is required"),
     name: userNameSchema,
     gender: z.enum(["male", "female", "other"], {
@@ -27,7 +30,9 @@ export const createAdminSchema = z.object({
     presentAddress: z.string().min(1, "Present address is required"),
     permanentAddress: z.string().min(1, "Permanent address is required"),
     profileImg: z.string().url("Invalid image URL").optional(),
-    isDeleted: z.boolean().default(false),
+    isDeleted: z.boolean().default(false),})
+
+    
   }),
 });
 

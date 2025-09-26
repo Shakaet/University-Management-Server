@@ -33,7 +33,7 @@ let AllRoutes = [
   {
     path: '/faculty',
     routes: FacultyRoutes,
-  }
+  },
 ]
 
 AllRoutes.forEach(route => router.use(route.path, route.routes))

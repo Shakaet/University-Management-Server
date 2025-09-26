@@ -1,4 +1,4 @@
-import { createFacultyIntoDB, createStudentToDatabase } from './user.service'
+import { createAdminIntoDB, createFacultyIntoDB, createStudentToDatabase } from './user.service'
 import { Student } from '../student/student.interface'
 import { NextFunction, Request, RequestHandler, Response } from 'express'
 import { senResponse } from '../../utils/sendResponse'
@@ -34,6 +34,18 @@ export const createFaculty = catchAsynFunction(async (req, res) => {
   senResponse(res, 200, {
     status: true,
     message: (result as any)?.message || 'Faculty is created succesfully',
+    data: result,
+  });
+});
+
+export const createAdmin = catchAsynFunction(async (req, res) => {
+  const { password, admin: adminData } = req.body;
+
+  const result = await createAdminIntoDB(password, adminData);
+
+  senResponse(res,200, {
+    status: true,
+    message: 'Admin is created succesfully',
     data: result,
   });
 });
