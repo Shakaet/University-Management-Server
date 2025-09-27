@@ -39,9 +39,11 @@ export const createAdminSchema = z.object({
 
 export const updateAdminSchema = z.object({
   body: z.object({
-    id: z.string().optional(),
-    user: z.string().optional(),
-    designation: z.string().optional(),
+    // id: z.string().optional(),
+    // user: z.string().optional(),
+
+    admin: z.object({
+      designation: z.string().optional(),
     name: userNameSchema.partial().optional(),
     gender: z.enum(["male", "female", "other"]).optional(),
     dateOfBirth: z
@@ -57,5 +59,7 @@ export const updateAdminSchema = z.object({
     permanentAddress: z.string().optional(),
     profileImg: z.string().url("Invalid image URL").optional(),
     isDeleted: z.boolean().optional(),
+    })
+    
   }),
 });
