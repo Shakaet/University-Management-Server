@@ -119,7 +119,7 @@ const skipNum = (pageNum - 1) * limitNum;
 const getSpecificStudentsFromDb = async (id: string) => {
   // const result=await studentmodel.findOne({id})
 
-  const result = await studentmodel.findOne({id}).populate("addmissionSemester")
+  const result = await studentmodel.findById(id).populate("addmissionSemester")
 
   // cause academic department abar populate kore academicFaculty ke
   .populate({
@@ -136,7 +136,7 @@ const deletedSpecificStudentfromDb = async (id: string) => {
 
 
 
-let isStudentExist=await studentmodel.findOne({id})
+let isStudentExist=await studentmodel.findById(id)
 if(!isStudentExist){
   throw new AppError(404,"students not found","")
 }
@@ -146,8 +146,8 @@ if(!isStudentExist){
     session.startTransaction()
 
     // transaction 1
-    const deletedStudent = await studentmodel.findOneAndUpdate(
-      { id },   // custom field
+    const deletedStudent = await studentmodel.findByIdAndUpdate(
+       id ,   
       { isDeleted: true },
       { new: true, session }
     )
@@ -156,9 +156,12 @@ if(!isStudentExist){
       throw new AppError(400, "Student Update Failed", "")
     }
 
+
+    let userId=deletedStudent.user
+
     // transaction 2
-    const deletedUser = await UserModel.findOneAndUpdate(
-      { id },   // custom field
+    const deletedUser = await UserModel.findByIdAndUpdate(
+      userId,   
       { isDeleted: true },
       { new: true, session }
     )
@@ -224,7 +227,7 @@ const updateSpecificStudentfromDb = async (id: string, payload: Partial<Student>
     }
   }
 
-  const result = await studentmodel.updateOne({ id },  modifiedData,{
+  const result = await studentmodel.findByIdAndUpdate( id ,  modifiedData,{
     runValidators:true
   } )
 

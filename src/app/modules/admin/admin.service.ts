@@ -78,6 +78,7 @@ const deleteAdminFromDB = async (id: string) => {
 
     if (!deletedUser) {
       throw new Error( 'Failed to delete user');
+      
     }
 
     await session.commitTransaction();

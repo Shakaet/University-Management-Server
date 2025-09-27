@@ -42,6 +42,8 @@ export let globarError:ErrorRequestHandler = (
   // default error
   let statusCode = err.StatusCode || 500
   let message = err.message || 'Something Went Wrong'
+  
+
 
 
  
@@ -120,7 +122,7 @@ export let globarError:ErrorRequestHandler = (
     status: false,
     message,
     errorSource,
-    // err,
+    // err
     stack: config.NODE_ENV==="development" ? err?.stack:null
     // error: err.issues[0].path,
 
