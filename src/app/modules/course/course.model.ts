@@ -29,6 +29,7 @@ const courseSchema = new Schema<TCourses>(
       type: [preRequisiteSchema],
       default: [], // ✅ খালি array হলে default [] থাকবে
     },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true, // createdAt, updatedAt auto add হবে

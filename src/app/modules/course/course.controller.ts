@@ -33,7 +33,7 @@ export let findAllCoursesController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  let result = await getAllCoursesFromDb()
+  let result = await getAllCoursesFromDb(req.query)
 
   res.status(200).json({
     status: true,
@@ -48,7 +48,7 @@ export let findOneCoursesController = async (
   res: Response,
   next: NextFunction,
 ) => {
-  let id = req.params.CoursesId
+  let id = req.params.courseId
   let result = await getSingleCoursesFromDb(id)
 
   res.status(200).json({

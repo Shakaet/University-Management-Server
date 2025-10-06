@@ -6,6 +6,7 @@ import { AcamedicFacultyRoutes } from '../modules/academicFaculty/academinFacult
 import { AcamedicDepartmentRoutes } from '../modules/academicDepartment/academicDepartment.route'
 import { FacultyRoutes } from '../modules/faculty/faculty.route'
 import { AdminRoutes } from '../modules/admin/admin.route'
+import { CourseRoutes } from '../modules/course/course.route'
 
 
 let router = Router()
@@ -38,6 +39,10 @@ let AllRoutes = [
   {
     path: '/admin',
     routes: AdminRoutes,
+  },
+  {
+    path:"/course",
+    routes:CourseRoutes,
   }
 ]
 
