@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { catchAsynFunction } from '../../utils/catchAsync'
-import { creeateCoursesIntoDb, deletecoursesFromDb, getAllCoursesFromDb, getSingleCoursesFromDb } from './course.service'
+import { creeateCoursesIntoDb, deletecoursesFromDb, getAllCoursesFromDb, getSingleCoursesFromDb, updateCoursesIntoDb } from './course.service'
 
 
 
@@ -74,4 +74,26 @@ export let deletedCoursesController = async (
       (result as any)?.message || 'Courses Deleted successfully',
     data: result,
   })
+}
+
+
+export let updateCoursesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  let id = req.params.courseId
+  let result = await updateCoursesIntoDb(id,req.body)
+
+  // res.send(result)
+
+  res.status(200).json({
+    status: true,
+    message:
+      (result as any)?.message || 'Courses Updated successfully',
+    data: result,
+  })
+
+
+  
 }

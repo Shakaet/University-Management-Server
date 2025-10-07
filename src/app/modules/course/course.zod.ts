@@ -19,12 +19,16 @@ export const createCourseValidationSchema = z.object({
 });
 
 // ----------------- Update Course Validation -----------------
-export const updateCourseValidationSchema = z.object({
-  body: z.object({
-    title: z.string().trim().optional(),
-    prefix: z.string().trim().optional(),
-    code: z.number().optional(),
-    credit: z.number().optional(),
-    preRequisite: z.array(preRequisiteSchema).optional(),
-  }),
-});
+// export const updateCourseValidationSchema = z.object({
+//   body: z.object({
+//     title: z.string().trim().optional(),
+//     prefix: z.string().trim().optional(),
+//     code: z.number().optional(),
+//     credit: z.number().optional(),
+//     preRequisite: z.array(preRequisiteSchema).optional(),
+//   }),
+// });
+
+
+export const updateCourseValidationSchema = createCourseValidationSchema.partial() // Make all fields optional for update
+
