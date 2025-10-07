@@ -60,7 +60,7 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
     
     let {preRequisite,...remainiBasicData}=payload
 
-    console.log(preRequisite)
+    // console.log(preRequisite)
 
     let updateBasicData=await CourseModel.findByIdAndUpdate(
         id,
@@ -70,7 +70,9 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
 
    // preRequisite er moddhe isdeleted true thakle seta remove korte hobe,false thakle add korte hobe,
 
-
+       // 2️⃣ Declare variables to return later
+            let deletePreRequisiteCourses
+            let addNewPreRequisiteCourses
     // check if any preRequisite is there to update
     if(preRequisite && preRequisite.length>0){
 
@@ -79,11 +81,11 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
 
         let deletedPreRequisite=preRequisite.filter((item)=>item.course && item.isDeleted).map((item)=>item.course)
 
-         console.log(deletedPreRequisite);
+        //  console.log(deletedPreRequisite);
 
 
 
-         let deletePreRequisiteCourses=await CourseModel.findByIdAndUpdate(
+          deletePreRequisiteCourses=await CourseModel.findByIdAndUpdate(
             id,
             {
                 $pull:{
@@ -95,10 +97,28 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
             {new:true}
          )
 
-        //  return deletePreRequisiteCourses
+         // filterout the new preRequisite to add
+
+
+    let newPreRequisite=preRequisite?.filter((item)=>item.course && !item.isDeleted)
+    // console.log(newPreRequisite); 
+
+     addNewPreRequisiteCourses=await CourseModel.findByIdAndUpdate(
+        id,
+        {   $addToSet:{
+                preRequisite:{ $each: newPreRequisite }
+            }
+        },
+        {new:true}
+     )
+
+        //   return {deletePreRequisiteCourses}
     }
 
-    return updateBasicData
+    
+        
+
+     return {deletePreRequisiteCourses,updateBasicData,addNewPreRequisiteCourses}
    
 
     
