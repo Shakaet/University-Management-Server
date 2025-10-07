@@ -187,3 +187,32 @@ export let assignFacultyWithCourseIntoDB=async(id:string,payload:Partial<TFacult
 
 
 }
+
+
+
+
+export let removedFacultyWithCourseFromDB=async(id:string,payload:Partial<TFaculties>)=>{
+
+
+
+    let result =await courseFacultyModel.findByIdAndUpdate(
+        id,
+        {
+            $pull:{faculties:{$in:payload}}
+        },
+        {
+           
+            new:true
+        },
+        
+    )
+
+    return result
+
+    
+
+ 
+
+
+
+}

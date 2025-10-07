@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { validateRequest } from '../../middleware/validateRequest'
-import { assignFacultyZodSchema, createCourseValidationSchema, updateCourseValidationSchema } from './course.zod'
-import { assignFaculties, assignFacultiesWithCourse, createCoursesController, deletedCoursesController, findAllCoursesController, findOneCoursesController, updateCoursesController } from './course.controller'
+import { assignFacultyZodSchema, createCourseValidationSchema, FacultyZodSchema, updateCourseValidationSchema } from './course.zod'
+import { assignFaculties, assignFacultiesWithCourse, createCoursesController, deletedCoursesController, deleteFacultiesWithCourse, findAllCoursesController, findOneCoursesController, updateCoursesController } from './course.controller'
 
 
 
@@ -15,6 +15,8 @@ router.delete('/:courseId', deletedCoursesController)
 
 router.patch('/:courseId',validateRequest(updateCourseValidationSchema), updateCoursesController) 
 
-router.put("/:courseId/assign-faculties",validateRequest(assignFacultyZodSchema),assignFacultiesWithCourse)
+router.put("/:courseId/assign-faculties",validateRequest(FacultyZodSchema),assignFacultiesWithCourse)
+
+router.delete("/:courseId/remove-faculties",validateRequest(FacultyZodSchema),deleteFacultiesWithCourse)
 
 export let CourseRoutes = router

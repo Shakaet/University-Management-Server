@@ -31,7 +31,7 @@ export const createCourseValidationSchema = z.object({
 
 
 
-export let assignFacultyZodSchema=z.object({
+export let FacultyZodSchema=z.object({
   body:z.object({
     faculties:z.array(z.string())
   })
