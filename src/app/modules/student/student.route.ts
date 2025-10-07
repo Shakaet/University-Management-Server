@@ -1,6 +1,7 @@
 import express from 'express'
 
 import {
+  assignFaculties,
   deletedSpecificStudent,
   getAllStudents,
   getSpecificStudent,

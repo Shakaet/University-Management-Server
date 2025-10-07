@@ -15,3 +15,8 @@ export type TCourses={
     isDeleted?:boolean
 
 }
+
+export type TFaculties={
+    course: Types.ObjectId,
+    faculties:[Types.ObjectId],
+}

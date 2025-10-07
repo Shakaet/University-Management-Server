@@ -123,3 +123,16 @@ export const updateStudent: RequestHandler = async (req, res, next) => {
     next(err)
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, RequestHandler, Response } from 'express'
 import { catchAsynFunction } from '../../utils/catchAsync'
-import { creeateCoursesIntoDb, deletecoursesFromDb, getAllCoursesFromDb, getSingleCoursesFromDb, updateCoursesIntoDb } from './course.service'
+import { assignFacultyInfoDB, assignFacultyWithCourseIntoDB, creeateCoursesIntoDb, deletecoursesFromDb, getAllCoursesFromDb, getSingleCoursesFromDb, updateCoursesIntoDb } from './course.service'
 
 
 
@@ -96,4 +96,31 @@ export let updateCoursesController = async (
 
 
   
+}
+
+
+
+export const assignFacultiesWithCourse: RequestHandler = async (req, res, next) => {
+  try {
+    const id = req.params.courseId
+
+    const {faculties} = req.body
+
+    const result = await assignFacultyWithCourseIntoDB(id,faculties)
+
+    res.status(200).json({
+      status: true,
+      messsage: 'CourseFaculty assign successfully',
+      data: result,
+    })
+  } catch (err: any) {
+    //  res.status(500).json({
+    //     status:false,
+    //     message:` ${err.message} ||something Wrong`,
+    //     data:err
+    // })
+
+    // console.log("errroer",err)
+    next(err)
+  }
 }

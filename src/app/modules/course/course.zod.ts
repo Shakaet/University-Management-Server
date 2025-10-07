@@ -30,5 +30,14 @@ export const createCourseValidationSchema = z.object({
 // });
 
 
+
+export let assignFacultyZodSchema=z.object({
+  body:z.object({
+    faculties:z.array(z.string())
+  })
+
+})
+
+
 export const updateCourseValidationSchema = createCourseValidationSchema.partial() // Make all fields optional for update
 

@@ -1,7 +1,8 @@
-import { Query } from 'mongoose';
-import { TCourses } from "./course.interface"
-import { CourseModel } from "./course.model"
+import mongoose, { Query } from 'mongoose';
+import { TCourses, TFaculties } from "./course.interface"
+import { courseFacultyModel, CourseModel } from "./course.model"
 import QueryBuilder from '../../builder/QueryBuilder';
+
 
 
 
@@ -57,7 +58,14 @@ export let deletecoursesFromDb=async(id:string)=>{
 
 export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{  
     
-    
+     const session = await mongoose.startSession()
+
+  try{
+
+    session.startTransaction()
+
+
+      
     let {preRequisite,...remainiBasicData}=payload
 
     // console.log(preRequisite)
@@ -65,8 +73,12 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
     let updateBasicData=await CourseModel.findByIdAndUpdate(
         id,
         remainiBasicData,
-        {new:true}
+        {new:true,session}
     )
+
+    if(!updateBasicData){
+        throw new Error('Failed to update course');
+    }
 
    // preRequisite er moddhe isdeleted true thakle seta remove korte hobe,false thakle add korte hobe,
 
@@ -94,8 +106,13 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
                     }
                 }
             },
-            {new:true}
+            {new:true,session}
          )
+
+
+         if(!deletePreRequisiteCourses){
+            throw new Error('Failed to update course');
+        }
 
          // filterout the new preRequisite to add
 
@@ -109,23 +126,63 @@ export let updateCoursesIntoDb=async(id:string,payload:Partial<TCourses>)=>{
                 preRequisite:{ $each: newPreRequisite }
             }
         },
-        {new:true}
+        {new:true,session}
      )
+
+
+     if(!addNewPreRequisiteCourses){
+        throw new Error('Failed to update course');
+    }
 
         //   return {deletePreRequisiteCourses}
     }
+
+     await session.commitTransaction()
+    await session.endSession()
+
 
     
         
 
      return {deletePreRequisiteCourses,updateBasicData,addNewPreRequisiteCourses}
+
+  }catch(error){
+    
+     await session.abortTransaction()
+    await session.endSession()
+    throw new Error('Failed to update course');
+
+  }
    
 
-    
+
+}
+
+
+
+
+export let assignFacultyWithCourseIntoDB=async(id:string,payload:Partial<TFaculties>)=>{
+
+
+
+    let result =await courseFacultyModel.findByIdAndUpdate(
+        id,
+        {
+            course:id,
+            $addToSet:{faculties:{$each:payload}}
+        },
+        {
+            upsert:true,
+            new:true
+        },
+        
+    )
+
+    return result
 
     
 
-
+ 
 
 
 
