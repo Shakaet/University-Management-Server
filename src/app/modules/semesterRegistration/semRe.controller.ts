@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response } from "express"
 import { catchAsynFunction } from "../../utils/catchAsync"
-import { createSemesterRegistrationServices, getAllSemesterRegistrationservices, singleSemesterRegistrationservices } from "./semRe.service"
+import { createSemesterRegistrationServices, getAllSemesterRegistrationservices, singleSemesterRegistrationservices, updateSemesterRegistrationToDBservices } from "./semRe.service"
 
 
 
@@ -58,33 +58,40 @@ export let singleSemesterRegistration=catchAsynFunction(async(req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
   /// httpStatus.OK
      res.status(200).json({
       status: true,
       messsage: 'Semester Registration Find Single Data successfully',
       data: result,
     })
+   
+
+})
 
 
-  
+export let updateSemesterRegistrationToDB=catchAsynFunction(async(req,res)=>{
+
+
+
+
+  let id=req.params.id
+
+
+
+  let result=await updateSemesterRegistrationToDBservices(id)
+
+
+  /// httpStatus.OK
+     res.status(200).json({
+      status: true,
+      messsage: 'Semester Registration updated successfully',
+      data: result,
+    })
+   
+
+
 
 
     
 
 })
-
-
-export let updateSemesterRegistrationToDB=async()=>{
-
-
-    
-
-}

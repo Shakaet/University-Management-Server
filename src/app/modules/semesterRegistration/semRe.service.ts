@@ -12,6 +12,23 @@ export let createSemesterRegistrationServices=async(payload:TsemesterRegistratio
     let academicSemester= payload?.academicSemester
 
 
+    // check if there any öngoing and upcoming semester that is already registered?
+
+
+    let isOngoingUpcomingSemAlreadyRegistered=await SemesterRegistrationModel.findOne({status:{$in:["ONGOING","UPCOMING"]}})
+
+
+    // console.log(isOngoingUpcomingSemAlreadyRegistered)
+    if(isOngoingUpcomingSemAlreadyRegistered){
+
+        throw new AppError(404,`there is already a ${isOngoingUpcomingSemAlreadyRegistered.status} semester`,"")
+
+
+    }
+
+
+
+
      // check if academicSemester exist
 
         let isAcademicSemesterExist=await AcademicSemesterModel.findById(academicSemester)
@@ -77,7 +94,7 @@ export let singleSemesterRegistrationservices=async(id:string)=>{
 }
 
 
-export let updateSemesterRegistrationToDBservices=async()=>{
+export let updateSemesterRegistrationToDBservices=async(id:string)=>{
 
 
     
