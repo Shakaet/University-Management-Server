@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response } from "express"
 import { catchAsynFunction } from "../../utils/catchAsync"
-import { createSemesterRegistrationServices } from "./semRe.service"
+import { createSemesterRegistrationServices, getAllSemesterRegistrationservices, singleSemesterRegistrationservices } from "./semRe.service"
 
 
 
@@ -24,21 +24,62 @@ export let createSemesterRegistrationToDB=catchAsynFunction(async(req:Request,re
 })
 
 
-export let getAllSemesterRegistration=async()=>{
+export let getAllSemesterRegistration=catchAsynFunction(async(req,res)=>{
+
+
+
+  let result=await getAllSemesterRegistrationservices(req.query)
+
+
+
+
+   /// httpStatus.OK
+     res.status(200).json({
+      status: true,
+      messsage: 'Semester Registration Find Data successfully',
+      data: result,
+    })
 
 
     
 
-}
+})
 
 
 
-export let singleSemesterRegistration=async()=>{
+export let singleSemesterRegistration=catchAsynFunction(async(req,res)=>{
+
+
+
+
+  let id=req.params.id
+
+  let result =await singleSemesterRegistrationservices(id)
+
+
+
+
+
+
+
+
+
+
+
+  /// httpStatus.OK
+     res.status(200).json({
+      status: true,
+      messsage: 'Semester Registration Find Single Data successfully',
+      data: result,
+    })
+
+
+  
 
 
     
 
-}
+})
 
 
 export let updateSemesterRegistrationToDB=async()=>{

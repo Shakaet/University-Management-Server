@@ -1,3 +1,4 @@
+import QueryBuilder from '../../builder/QueryBuilder';
 import { AppError } from '../../Errors/AppError';
 import { AcademicSemesterModel } from '../academicSem/academicSem.model';
 import { TsemesterRegistration } from './SemRe.interface';
@@ -43,7 +44,18 @@ export let createSemesterRegistrationServices=async(payload:TsemesterRegistratio
 
 
 
-export let getAllSemesterRegistrationservices=async()=>{
+export let getAllSemesterRegistrationservices=async(query:Record<string, unknown>)=>{
+
+
+  const queryBuilder = new QueryBuilder(SemesterRegistrationModel.find(), query)
+      .search(["status"])
+      .filter()
+      .sort()
+      .paginate()
+      .fields();
+
+    const result = await queryBuilder.modelQuery.populate("academicSemester");
+      return result;
 
 
     
@@ -52,7 +64,12 @@ export let getAllSemesterRegistrationservices=async()=>{
 
 
 
-export let singleSemesterRegistrationservices=async()=>{
+export let singleSemesterRegistrationservices=async(id:string)=>{
+
+    let result=await SemesterRegistrationModel.findById(id)
+
+
+    return result
 
 
     
