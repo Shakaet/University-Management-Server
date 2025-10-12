@@ -1,8 +1,9 @@
 import { Router } from "express"
 import { validateRequest } from "../../middleware/validateRequest"
 
-import { createOfferedCoursesController } from "./offerCourse.controller"
+import { createOfferedCoursesController, getAllOfferCourses } from "./offerCourse.controller"
 import { createOfferedCourseValidationSchema } from "./offerCourse.zod"
+import { findAllCoursesController } from "../course/course.controller"
 
 
 
@@ -15,7 +16,7 @@ router.post('/create-offered-Course',
     validateRequest(createOfferedCourseValidationSchema),
      createOfferedCoursesController)
 
-// router.get('/allCourses',findAllCoursesController )
+router.get('/all-offered-courses',getAllOfferCourses )
 // router.get('/:courseId', findOneCoursesController)
 
 

@@ -1,5 +1,5 @@
 import { catchAsynFunction } from "../../utils/catchAsync";
-import { createOfferedCoursesIntoDb } from "./offerCourse.service";
+import { createOfferedCoursesIntoDb, getAllFacultiesFromDB } from "./offerCourse.service";
 
 
 
@@ -26,3 +26,15 @@ export let createOfferedCoursesController=catchAsynFunction( async (req, res) =>
     //      data:result
     // })
   },)
+
+
+export const getAllOfferCourses = catchAsynFunction(async (req, res) => {
+  const result = await getAllFacultiesFromDB(req.query);
+
+  res.status(200).json({
+      status: true,
+      messsage: 'Offered Courses retrive Successfully',
+      data: result,
+    })
+});
+
