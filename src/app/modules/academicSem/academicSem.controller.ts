@@ -50,10 +50,10 @@ export let findOneAcademicSemController = async (
 
   res.send(result)
 }
-export let updateAcademicSemController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
+
+export let updateAcademicSemController = catchAsynFunction( async (
+  req,
+  res,
 ) => {
   let id = req.params.semesterId
   let data = req.body
@@ -68,3 +68,4 @@ export let updateAcademicSemController = async (
     data: result,
   })
 }
+)

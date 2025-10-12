@@ -1,5 +1,6 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 import { AppError } from '../../Errors/AppError';
+import { TacademicSemester } from '../academicSem/academicSem.interface';
 import { AcademicSemesterModel } from '../academicSem/academicSem.model';
 import { TsemesterRegistration } from './SemRe.interface';
 import { SemesterRegistrationModel } from './semRe.model';
@@ -94,7 +95,32 @@ export let singleSemesterRegistrationservices=async(id:string)=>{
 }
 
 
-export let updateSemesterRegistrationToDBservices=async(id:string)=>{
+export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partial<TacademicSemester>)=>{
+
+
+
+    // check if the requested ragistered Semester is Exits
+
+    let isRequestedSemesterExist=await SemesterRegistrationModel.findById(id)
+
+     if(!isRequestedSemesterExist){
+            throw new AppError(404," this Academic Semester not Exist ! ","")
+        }
+
+
+        // if the registered semester is ended, we will not update anything
+
+        let requestSemesterStatus= await SemesterRegistrationModel.findOne({_id:id,status:"ENDED"})
+
+        if (requestSemesterStatus) {
+        throw new AppError(404,`this semester is already ${requestSemesterStatus.status}`,"")
+        } 
+
+
+
+
+
+
 
 
     

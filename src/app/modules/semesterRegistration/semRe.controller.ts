@@ -78,7 +78,7 @@ export let updateSemesterRegistrationToDB=catchAsynFunction(async(req,res)=>{
 
 
 
-  let result=await updateSemesterRegistrationToDBservices(id)
+  let result=await updateSemesterRegistrationToDBservices(id,req.body)
 
 
   /// httpStatus.OK
