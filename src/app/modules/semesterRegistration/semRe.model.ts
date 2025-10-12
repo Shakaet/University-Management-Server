@@ -16,7 +16,7 @@ const semesterRegistrationSchema=new Schema<TsemesterRegistration>(
     },
     status: {
       type: String,
-      enum: ["UPCOMING", "ONGOING", "ENDS"],
+      enum: ["UPCOMING", "ONGOING", "ENDED"],
       default: "UPCOMING",
       required: true,
     },

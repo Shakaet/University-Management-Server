@@ -7,7 +7,7 @@ export const createSemesterRegistrationZodSchema = z.object({
   academicSemester: z.string({
     required_error: "Academic Semester ID is required",
   }),
-  status: z.enum(["UPCOMING", "ONGOING", "ENDS"]).optional(), // default handled by backend
+  status: z.enum(["UPCOMING", "ONGOING", "ENDED"]).optional(), // default handled by backend
   startDate: z
     .string({
       required_error: "Start date is required",
@@ -45,7 +45,7 @@ export const updateSemesterRegistrationZodSchema = z.object({
         message: "Invalid academicSemester ObjectId",
       })
       .optional(),
-    status: z.enum(["UPCOMING", "ONGOING", "ENDS"]).optional(),
+    status: z.enum(["UPCOMING", "ONGOING", "ENDED"]).optional(),
     startDate: z
       .string()
       .refine((date) => !isNaN(Date.parse(date)), {

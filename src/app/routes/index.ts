@@ -8,6 +8,7 @@ import { FacultyRoutes } from '../modules/faculty/faculty.route'
 import { AdminRoutes } from '../modules/admin/admin.route'
 import { CourseRoutes } from '../modules/course/course.route'
 import { semesterRegistrationRoutes } from '../modules/semesterRegistration/semRe.route'
+import { offerCouresRoutes } from '../modules/offerCourses/offerCourse.route'
 
 
 let router = Router()
@@ -48,6 +49,10 @@ let AllRoutes = [
   {
     path:"/sem-Registration",
     routes:semesterRegistrationRoutes,
+  },
+  {
+    path:"/offer-courses",
+    routes:offerCouresRoutes,
   }
 ]
 

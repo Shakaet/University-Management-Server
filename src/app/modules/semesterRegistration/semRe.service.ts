@@ -95,10 +95,10 @@ export let singleSemesterRegistrationservices=async(id:string)=>{
 }
 
 
-export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partial<TacademicSemester>)=>{
+export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partial<TsemesterRegistration>)=>{
 
 
-
+     let requestedStatus= payload?.status
     // check if the requested ragistered Semester is Exits
 
     let isRequestedSemesterExist=await SemesterRegistrationModel.findById(id)
@@ -111,12 +111,45 @@ export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partia
         // if the registered semester is ended, we will not update anything
 
         let requestSemesterStatus= await SemesterRegistrationModel.findOne({_id:id,status:"ENDED"})
-
+        let currentSemesterStatus= isRequestedSemesterExist?.status
         if (requestSemesterStatus) {
         throw new AppError(404,`this semester is already ${requestSemesterStatus.status}`,"")
         } 
+        // UPCOMING ==> ONGOING ==> ENDED (ulta hote parbena),ota handle korbo
+        if(currentSemesterStatus=="UPCOMING" && requestedStatus=="ENDED"){
+
+            throw new AppError(404,
+                `You can not Directly Changed status From ${currentSemesterStatus} to ${requestedStatus}`,
+                "")
+
+        }
 
 
+         if(currentSemesterStatus=="ONGOING" && requestedStatus=="UPCOMING"){
+
+            throw new AppError(404,
+                `You can not Directly Changed status From ${currentSemesterStatus} to ${requestedStatus}`,
+                "")
+
+        }
+
+
+
+        let result=await SemesterRegistrationModel.findByIdAndUpdate(
+            id,
+            payload,
+            {
+                new:true,
+                runValidators:true,
+            }
+
+        )
+
+        return result
+
+        
+
+    }
 
 
 
@@ -125,4 +158,3 @@ export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partia
 
     
 
-}
