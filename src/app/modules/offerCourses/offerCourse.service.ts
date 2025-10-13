@@ -16,7 +16,7 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
    //check if the semester registration id is exist!
 //   console.log(payload)
 
-   let {semesterRegistration,academicFaculty,academicDepartment,course, faculty,section}=payload
+   let {semesterRegistration,academicFaculty,academicDepartment,course, faculty,section,days,startTime,endTime}=payload
 
 
    let isSemesterRegistrationExist=await SemesterRegistrationModel.findById(semesterRegistration)
@@ -90,6 +90,41 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
    }
 
 
+
+   // get the schedule of the faculties
+
+   let assignedScheduled=await OfferedCourseModel.find({
+     semesterRegistration,faculty,days:{$in:days}
+   },{days:1,startTime:1,endTime:1})
+
+   console.log(assignedScheduled)
+
+
+
+  let newScheduledFromPayload={
+    days,
+    startTime,
+    endTime
+  }
+
+
+  assignedScheduled.forEach((schedule)=>{
+
+
+    let existingStartTime =new Date(`1970-01-01T${schedule.startTime}`)
+    let existingEndTime =new Date(`1970-01-01T${schedule.endTime}`)
+    let newStartTime=new Date(`1970-01-01T${newScheduledFromPayload.startTime}`)
+    let newEndTime=new Date(`1970-01-01T${newScheduledFromPayload.endTime}`)
+
+
+    if(newStartTime<existingEndTime && newEndTime >existingStartTime){
+      throw new AppError(404,`this faculty is not available that time ! choose others date or time`,"")
+
+    }
+
+  })
+
+
   
 
 
@@ -98,6 +133,7 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
      let result= await OfferedCourseModel.create({...payload,academicSemester})
     
      return result
+    // return null
 }
 
 
