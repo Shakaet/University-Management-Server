@@ -16,7 +16,7 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
    //check if the semester registration id is exist!
 //   console.log(payload)
 
-   let {semesterRegistration,academicFaculty,academicDepartment,course, faculty}=payload
+   let {semesterRegistration,academicFaculty,academicDepartment,course, faculty,section}=payload
 
 
    let isSemesterRegistrationExist=await SemesterRegistrationModel.findById(semesterRegistration)
@@ -56,6 +56,41 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
    if(!isFacultyExist){
     throw new AppError(404,"Faculty Not Found","")
    }
+
+
+
+   // check if the department is belong to the faculty
+
+   let isDepartmentBelongToFaculty=await academicDepartmentModel.findOne({
+    _id:academicDepartment,
+    academicFaculty,
+    
+   })
+
+
+   if(!isDepartmentBelongToFaculty){
+     throw new AppError(404,`the ${isacademicDepartmentExist.name} is not belong to this ${isacademicFacultyExist.name}`,"")
+   }
+
+
+
+   // check if the same offered course same section in same registered semister exist
+
+
+
+   let isSameOfferCourseExistsWithSameRegisteredSemesterWithSameSection=await
+   OfferedCourseModel.findOne({
+    semesterRegistration,
+    course,
+    section
+   })
+
+   if(isSameOfferCourseExistsWithSameRegisteredSemesterWithSameSection){
+    throw new AppError(400,`Offered Course with same section is already exist!`,"")
+   }
+
+
+  
 
 
 
