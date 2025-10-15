@@ -7,6 +7,7 @@ import { Faculty } from "../faculty/faculty.model";
 import { SemesterRegistrationModel } from "../semesterRegistration/semRe.model";
 import { TOfferedCourse } from "./offerCourse.interface";
 import { OfferedCourseModel } from "./offerCourse.model";
+import { hasTimeConflict } from "./offerCourse.utils";
 
 
 
@@ -97,7 +98,7 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
      semesterRegistration,faculty,days:{$in:days}
    },{days:1,startTime:1,endTime:1})
 
-   console.log(assignedScheduled)
+  //  console.log(assignedScheduled)
 
 
 
@@ -108,21 +109,13 @@ export let createOfferedCoursesIntoDb=async(payload:Partial<TOfferedCourse>)=>{
   }
 
 
-  assignedScheduled.forEach((schedule)=>{
+   if(hasTimeConflict(assignedScheduled,newScheduledFromPayload)){
 
+    throw new AppError(404,`This faculty is not available at that time ! choose other time or day`,"")
+   }
+   
 
-    let existingStartTime =new Date(`1970-01-01T${schedule.startTime}`)
-    let existingEndTime =new Date(`1970-01-01T${schedule.endTime}`)
-    let newStartTime=new Date(`1970-01-01T${newScheduledFromPayload.startTime}`)
-    let newEndTime=new Date(`1970-01-01T${newScheduledFromPayload.endTime}`)
-
-
-    if(newStartTime<existingEndTime && newEndTime >existingStartTime){
-      throw new AppError(404,`this faculty is not available that time ! choose others date or time`,"")
-
-    }
-
-  })
+    
 
 
   
