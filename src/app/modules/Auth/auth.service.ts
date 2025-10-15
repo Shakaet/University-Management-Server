@@ -5,6 +5,9 @@ import { TloginUser } from "./auth.interface";
 import bcrypt from "bcrypt"
 import { validateUserById } from "./utils";
 
+import jwt from "jsonwebtoken"
+import config from "../../config";
+
 
 
 export let loginUserServices=async(payload:TloginUser)=>{
@@ -68,6 +71,26 @@ export let loginUserServices=async(payload:TloginUser)=>{
     // access granted: send Access token,Refresh token
 
 
+    let jwtPayload={
+        userId:user?.id,
+        role:user?.role
+
+
+
+    }
+
+
+
+    // create json web token ans sent to the client
+
+   let accessToken= jwt.sign(jwtPayload, config.JWT_Access_Secret as string , { expiresIn: "10d" });
+
+   
+
+   return {
+    accessToken,
+    needPasswordChanged:user?.needsPasswordChange
+   }
 
 
 
