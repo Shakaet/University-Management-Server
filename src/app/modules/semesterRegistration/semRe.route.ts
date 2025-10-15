@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest";
 import {  createSemesterRegistrationZodSchema, updateSemesterRegistrationZodSchema } from "./semRe.Zod";
-import {  createSemesterRegistrationToDB, getAllSemesterRegistration, singleSemesterRegistration, updateSemesterRegistrationToDB } from "./semRe.controller";
+import {  createSemesterRegistrationToDB, deleteSemesterRegistration, getAllSemesterRegistration, singleSemesterRegistration, updateSemesterRegistrationToDB } from "./semRe.controller";
 
 
 
@@ -24,6 +24,10 @@ let router=Router()
    validateRequest(updateSemesterRegistrationZodSchema),
    updateSemesterRegistrationToDB,
  )
+
+
+
+  router.delete('/:id',deleteSemesterRegistration)
 
 
 

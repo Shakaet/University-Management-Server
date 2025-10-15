@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response } from "express"
 import { catchAsynFunction } from "../../utils/catchAsync"
-import { createSemesterRegistrationServices, getAllSemesterRegistrationservices, singleSemesterRegistrationservices, updateSemesterRegistrationToDBservices } from "./semRe.service"
+import { createSemesterRegistrationServices, deletedSemesterRegistrationToDBservices, getAllSemesterRegistrationservices, singleSemesterRegistrationservices, updateSemesterRegistrationToDBservices } from "./semRe.service"
 
 
 
@@ -93,5 +93,25 @@ export let updateSemesterRegistrationToDB=catchAsynFunction(async(req,res)=>{
 
 
     
+
+})
+
+
+
+export let deleteSemesterRegistration=catchAsynFunction(async(req,res)=>{
+
+  let {id}=req.params
+
+
+  let result=await deletedSemesterRegistrationToDBservices(id)
+
+
+  /// httpStatus.OK
+     res.status(200).json({
+      status: true,
+      messsage: 'Semester Registration Deleted successfully',
+      data: result,
+    })
+
 
 })

@@ -1,9 +1,11 @@
+import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { AppError } from '../../Errors/AppError';
 import { TacademicSemester } from '../academicSem/academicSem.interface';
 import { AcademicSemesterModel } from '../academicSem/academicSem.model';
 import { TsemesterRegistration } from './SemRe.interface';
 import { SemesterRegistrationModel } from './semRe.model';
+import { OfferedCourseModel } from '../offerCourses/offerCourse.model';
 
 
 
@@ -154,7 +156,72 @@ export let updateSemesterRegistrationToDBservices=async(id:string,payload:Partia
 
 
 
+export let deletedSemesterRegistrationToDBservices=async(id:string)=>{
 
+   
+
+    
+    // console.log(id)
+
+    let semesterRegistrationExist=await SemesterRegistrationModel.findById(id)
+
+    if(!semesterRegistrationExist){
+        throw new AppError(404,"this Semester Reistration not Exist in DB","")
+    }
+
+
+    if(semesterRegistrationExist.status!=="UPCOMING"){
+
+         throw new AppError(
+              404,
+              `Offered course can not update ! because the semester ${semesterRegistrationExist?.status}`,
+              ""
+            );
+    }
+     
+   
+  
+
+     const session = await mongoose.startSession(); // 1️⃣ Start session
+
+    try{
+
+         session.startTransaction();
+
+         
+
+
+
+    let deletedOfferCourse=await OfferedCourseModel.deleteMany({semesterRegistration:id},{session})
+     
+    if(!deletedOfferCourse){
+        throw new AppError(400,"Offer Course Does not Deleted","")
+    }
+
+    let deletedSemesterRegistration=await SemesterRegistrationModel.findByIdAndDelete(id,{new:true, session})
+
+     if(!deletedSemesterRegistration){
+        throw new AppError(400,"Semester Registration Does not Deleted","")
+    }
+     await session.commitTransaction()
+    await session.endSession()
+
+    return deletedSemesterRegistration
+
+    }catch(err:any){
+
+    await session.abortTransaction()
+    await session.endSession()
+    // throw new Error("failed to Delete Semester Registration")
+    throw new Error(err)
+
+    }
+
+
+
+  
+
+}
 
     
 
