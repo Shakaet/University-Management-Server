@@ -2,6 +2,7 @@ import { Router } from "express"
 import { updateFacultyZodSchema } from "./validation.zod";
 import { validateRequest } from "../../middleware/validateRequest";
 import { FacultyControllers } from "./faculty.controller";
+import { auth } from "../../middleware/auth";
 
 
 const router = Router()
@@ -18,6 +19,6 @@ router.patch(
 
 router.delete('/faculty/:id', FacultyControllers.deleteFaculty);
 
-router.get('/faculty', FacultyControllers.getAllFaculties);
+router.get('/faculty',auth(), FacultyControllers.getAllFaculties);
 
 export const FacultyRoutes = router
