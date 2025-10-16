@@ -7,7 +7,8 @@ import { TUser } from './user.interface'
 const userSchema = new Schema<TUser>(
   {
     id: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select:0 },
+    passwordChagedAt:{type:Date},
     needsPasswordChange: { type: Boolean, default: true },
     role: { type: String, enum: ['student', 'admin', 'faculty'] },
     status: {

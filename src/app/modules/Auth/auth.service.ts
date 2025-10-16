@@ -5,7 +5,7 @@ import { TloginUser } from "./auth.interface";
 import bcrypt from "bcrypt"
 import { validateUserById } from "./utils";
 
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import config from "../../config";
 
 
@@ -65,7 +65,7 @@ export let loginUserServices=async(payload:TloginUser)=>{
 
     const user = await validateUserById(id, password);
 
-    // console.log(user)
+    console.log(user)
 
 
     // access granted: send Access token,Refresh token
@@ -95,3 +95,49 @@ export let loginUserServices=async(payload:TloginUser)=>{
 
 
 } 
+
+  
+// type TUser={
+//     userId:string,
+//     role:string
+// }
+
+
+type TPass={
+    oldPassword:string,
+    newPassword:string
+}
+
+export let changedPasswordServices=async(userData:JwtPayload,payload:TPass)=>{
+
+
+
+      const user = await validateUserById(userData.userId, payload.oldPassword);
+
+    //   console.log(user)
+
+
+
+    // hash new password
+
+    let newHashPassWord =await bcrypt.hash(payload.newPassword,Number(config.bcryptHash))
+
+
+
+//    console.log(newHashPassWord)
+
+    let result=await UserModel.findOneAndUpdate({
+        id:userData.userId,
+        role:user.role
+    },{
+        password:newHashPassWord,
+        needsPasswordChange:false,
+        passwordChagedAt:new Date()
+    })
+
+    // console.log(result)
+
+    return null
+
+
+}

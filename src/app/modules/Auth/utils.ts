@@ -6,7 +6,7 @@ import { UserModel } from "../user/user.model";
 
 export const validateUserById = async (id: string, password?: string) => {
   // 1️⃣ Check if user exists
-  const user = await UserModel.findOne({ id });
+  const user = await UserModel.findOne({ id }).select("+password");
   if (!user) {
     throw new AppError(404, "This user does not exist", "");
   }

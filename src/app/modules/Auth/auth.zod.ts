@@ -10,3 +10,12 @@ export let loginValidationSchema=z.object({
 
     })
 })
+
+
+export let changedPasswordValidationSchema=z.object({
+    body:z.object({
+        oldPassword:z.string({message:"Old Password is Required"}),
+        newPassword:z.string({message:"Password is Required"})
+
+    })
+})

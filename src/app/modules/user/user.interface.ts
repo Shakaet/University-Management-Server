@@ -1,6 +1,7 @@
 export type TUser = {
   id: string
   password: string
+  passwordChagedAt?:Date,
   needsPasswordChange: boolean
   role: 'student' | 'admin' | 'faculty'
   status: 'in-progress' | 'blocked'
