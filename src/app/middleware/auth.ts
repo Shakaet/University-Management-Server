@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { AppError } from "../Errors/AppError"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import config from "../config"
+import { TuseRole } from "../modules/user/user.constrain"
 
 
 
@@ -21,7 +22,7 @@ declare global{
 }
 
 
-export let auth=()=>{
+export let auth=(...requireRoles:TuseRole[])=>{
 
    return async function(req:Request,res:Response,next:NextFunction){
 
@@ -47,8 +48,22 @@ export let auth=()=>{
 
             // console.log(userId,role)
 
+
+
+            // check roles are valid
+
+            let role= (decoded as JwtPayload).role
+
+            // console.log(requireRoles,role)
+
+            if(requireRoles && !requireRoles.includes(role)){
+
+                  throw new AppError(401,`You are not Authorized`,"")
+
+            }
+
             req.user=decoded as JwtPayload
-            
+
              next()
 
     

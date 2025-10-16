@@ -5,11 +5,13 @@ import { studentZodSchema } from '../student/validation.jod'
 import { validateRequest } from '../../middleware/validateRequest'
 import { createFacultyZodSchema } from '../faculty/validation.zod'
 import { createAdminSchema } from '../admin/validation.zod'
+import { auth } from '../../middleware/auth'
+import { user_role } from './user.constrain'
 
 const router = express.Router()
 
 // will call controller function
-router.post('/create-student', validateRequest(studentZodSchema), createStudent)
+router.post('/create-student',auth(user_role.admin), validateRequest(studentZodSchema), createStudent)
 router.post(
   '/create-faculty',
   validateRequest(createFacultyZodSchema),
