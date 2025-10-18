@@ -100,6 +100,91 @@ export let loginUserServices=async(payload:TloginUser)=>{
 
 } 
 
+
+
+
+
+
+export let refreshTokenServices=async(token:string)=>{
+
+
+     // if the token is sent from the client
+        if(!token){
+            throw new AppError(401,`You are not Authorized`,"")
+        }
+    
+        // check if the token is valid
+    
+    
+        // verify a token symmetric
+    
+    
+        
+    // invalid token - synchronous
+                   
+             const decoded = jwt.verify(token, config.JWT_Refresh_Secret as string);
+    
+                // check roles are valid
+    
+                let role= (decoded as JwtPayload).role
+    
+                let id= (decoded as JwtPayload). userId
+                let iat=(decoded as JwtPayload).iat
+    
+    
+                
+                 const user = await validateUserById(id);
+                
+                    // console.log(user)
+                    
+    
+                    if(!user){
+                        throw new AppError(401,`unauthorized access`,"")
+                    }
+    
+    
+    
+    
+                    let passwordChangedTime=user.passwordChagedAt
+                    let jwtIssueTime:number=iat as number
+    
+                    let passwordChangedTimeConvertToNumber=new Date(passwordChangedTime as Date).getTime()/1000
+    
+                    // console.log(passwordChangedTimeConvertToNumber,jwtIssueTime)
+    
+                    if(passwordChangedTimeConvertToNumber>jwtIssueTime){
+    
+                        throw new AppError(401,`you are not authorized`,"")
+    
+                    }
+
+
+
+    let jwtPayload={
+        userId:user?.id,
+        role:user?.role
+
+    }
+
+     // create json web access token ans sent to the client
+
+   let accessToken= jwt.sign(jwtPayload, config.JWT_Access_Secret as string , { expiresIn: config.JWT_Access_Expired  || "10d" });
+     // create json refresh token ans sent to the client
+
+   let refreshToken= jwt.sign(jwtPayload, config.JWT_Refresh_Secret as string , { expiresIn: config.JWT_Refresh_Expired ||"265d"  });
+
+
+    return {
+    accessToken
+   }
+
+    
+    
+    
+                
+
+}
+
   
 // type TUser={
 //     userId:string,

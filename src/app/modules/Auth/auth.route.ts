@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest";
-import { changedPasswordValidationSchema, loginValidationSchema } from "./auth.zod";
-import { changedPassword, loginUser } from "./auth.controller";
+import { changedPasswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema } from "./auth.zod";
+import { changedPassword, loginUser, refreshToken } from "./auth.controller";
 import { auth } from "../../middleware/auth";
 import { user_role } from "../user/user.constrain";
 
@@ -15,6 +15,12 @@ import { user_role } from "../user/user.constrain";
  router.post("/login",
     validateRequest(loginValidationSchema),
     loginUser
+ )
+
+  router.post("/refresh-token",
+  
+    validateRequest(refreshTokenValidationSchema),
+     refreshToken
  )
 
 

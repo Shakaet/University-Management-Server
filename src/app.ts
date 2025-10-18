@@ -7,13 +7,17 @@ import { globarError } from './app/middleware/globalErrorHandler'
 import { notFound } from './app/middleware/notfound'
 import router from './app/routes'
 import { promise } from 'zod'
+  import cookieParser  from 'cookie-parser';
 
 // const port = 3000
 
 //parser
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin:["http://localhost:5173"]
+}))
+ app.use(cookieParser());
 
 // application routes
 

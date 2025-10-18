@@ -10,6 +10,7 @@ export let validateRequest: any = (schema: ZodObject) => {
       //validate check
       await schema.parseAsync({
         body: req.body,
+        cookies:req.cookies
       })
 
       next()

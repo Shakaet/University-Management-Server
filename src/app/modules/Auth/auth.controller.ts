@@ -2,7 +2,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsynFunction } from "../../utils/catchAsync";
 import { senResponse } from "../../utils/sendResponse";
-import { changedPasswordServices, loginUserServices } from "./auth.service";
+import { changedPasswordServices, loginUserServices, refreshTokenServices } from "./auth.service";
 
 
 
@@ -33,6 +33,26 @@ export let  loginUser=catchAsynFunction(async(req,res)=>{
           refreshToken,needPasswordChanged
         
         }
+        
+      })
+
+
+})
+
+export let  refreshToken=catchAsynFunction(async(req,res)=>{
+
+
+    let { refreshToken}=req.cookies
+   let result= await refreshTokenServices(refreshToken)
+
+    
+    
+    senResponse(res,200,{
+    
+         status: true,
+        message: 'Access token is retrived successfully',
+        // data: result,
+        data:result
         
       })
 

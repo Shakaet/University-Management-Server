@@ -12,6 +12,16 @@ export let loginValidationSchema=z.object({
 })
 
 
+export let refreshTokenValidationSchema=z.object({
+    cookies:z.object({
+        refreshToken:z.string({message:"RefreshToken is Required"})
+    })
+})
+
+
+
+
+
 export let changedPasswordValidationSchema=z.object({
     body:z.object({
         oldPassword:z.string({message:"Old Password is Required"}),
