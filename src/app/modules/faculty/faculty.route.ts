@@ -3,6 +3,7 @@ import { updateFacultyZodSchema } from "./validation.zod";
 import { validateRequest } from "../../middleware/validateRequest";
 import { FacultyControllers } from "./faculty.controller";
 import { auth } from "../../middleware/auth";
+import { user_role } from "../user/user.constrain";
 
 
 const router = Router()
@@ -19,6 +20,6 @@ router.patch(
 
 router.delete('/faculty/:id', FacultyControllers.deleteFaculty);
 
-router.get('/faculty',auth(), FacultyControllers.getAllFaculties);
+router.get('/faculty',auth(user_role.admin,user_role.faculty), FacultyControllers.getAllFaculties);
 
 export const FacultyRoutes = router

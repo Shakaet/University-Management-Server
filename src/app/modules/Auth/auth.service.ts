@@ -128,7 +128,7 @@ export let changedPasswordServices=async(userData:JwtPayload,payload:TPass)=>{
 
     let result=await UserModel.findOneAndUpdate({
         id:userData.userId,
-        role:user.role
+        role:userData.role
     },{
         password:newHashPassWord,
         needsPasswordChange:false,
