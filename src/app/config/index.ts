@@ -10,7 +10,10 @@ export default {
   mongo_uri: process.env.MONGODB_URI,
   bcryptHash: process.env.bcrypt,
   Password: process.env.default_Pass,
-  JWT_Access_Secret:process.env.JWT_Access_Secret
+  JWT_Access_Secret:process.env.JWT_Access_Secret as string,
+  JWT_Refresh_Secret:process.env.JWT_Refresh_Secret as string,
+  JWT_Access_Expired:process.env.JWT_Access_Expired || "10d",
+  JWT_Refresh_Expired:process.env.JWT_Refresh_Expired|| "365d"
 }
 
 
@@ -24,8 +27,10 @@ export default {
 // default_Pass=1234568888
 
 // JWT_Access_Secret="secret"
+// JWT_Refresh_Secret= 71d21acfbfa99f5d6357cc71abcee8798a17b72b12fe53daec4fe093cfc49cd0
 
-
+// JWT_Access_Expired=10d
+// JWT_Refresh_Expired=365d
 
 
 // process to genrated secret key by terminal

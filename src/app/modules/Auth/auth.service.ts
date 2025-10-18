@@ -81,14 +81,18 @@ export let loginUserServices=async(payload:TloginUser)=>{
 
 
 
-    // create json web token ans sent to the client
+    // create json web access token ans sent to the client
 
-   let accessToken= jwt.sign(jwtPayload, config.JWT_Access_Secret as string , { expiresIn: "10d" });
+   let accessToken= jwt.sign(jwtPayload, config.JWT_Access_Secret as string , { expiresIn: config.JWT_Access_Expired  || "10d" });
+     // create json refresh token ans sent to the client
+
+   let refreshToken= jwt.sign(jwtPayload, config.JWT_Refresh_Secret as string , { expiresIn: config.JWT_Refresh_Expired ||"265d"  });
 
    
 
    return {
     accessToken,
+    refreshToken,
     needPasswordChanged:user?.needsPasswordChange
    }
 
