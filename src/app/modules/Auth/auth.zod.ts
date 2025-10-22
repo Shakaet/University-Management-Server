@@ -29,3 +29,13 @@ export let changedPasswordValidationSchema=z.object({
 
     })
 })
+
+
+export const forgetPassswordValidationSchema=z.object({
+
+  body:z.object({
+    id:z.string({
+      message:"Id is Required"
+    })
+  })
+})

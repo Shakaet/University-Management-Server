@@ -7,6 +7,7 @@ import { validateUserById } from "./utils";
 
 import jwt, { JwtPayload } from "jsonwebtoken"
 import config from "../../config";
+import { sentEmail } from "../../utils/sendEmail";
 
 
 
@@ -227,6 +228,41 @@ export let changedPasswordServices=async(userData:JwtPayload,payload:TPass)=>{
     // console.log(result)
 
     return null
+
+
+}
+
+
+
+
+export let forgetPasswordServices=async(id:string)=>{
+
+
+    const user = await validateUserById(id);
+
+    
+    let jwtPayload={
+        userId:user?.id,
+        role:user?.role
+
+    }
+
+
+
+    // create json web access token ans sent to the client
+
+   let resetToken= jwt.sign(jwtPayload, config.JWT_Access_Secret as string , { expiresIn: "10m" });
+     // create json refresh token ans sent to the client
+
+
+    const resetLinkUI=`${config.Reset_Password_UI_Link}?id=${user?.id}&token=${resetToken}`
+
+    // console.log(resetLinkUI)
+
+    sentEmail(user.email,resetLinkUI)
+
+
+
 
 
 }

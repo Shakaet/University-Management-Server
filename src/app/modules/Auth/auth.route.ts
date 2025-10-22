@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest";
-import { changedPasswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema } from "./auth.zod";
-import { changedPassword, loginUser, refreshToken } from "./auth.controller";
+import { changedPasswordValidationSchema, forgetPassswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema } from "./auth.zod";
+import { changedPassword, forgetPassword, loginUser, refreshToken } from "./auth.controller";
 import { auth } from "../../middleware/auth";
 import { user_role } from "../user/user.constrain";
 
@@ -28,6 +28,12 @@ import { user_role } from "../user/user.constrain";
    auth(user_role.admin,user_role.student,user_role.faculty),
     validateRequest(changedPasswordValidationSchema),
     changedPassword
+ )
+
+
+ router.post("/forget-password",
+   validateRequest(forgetPassswordValidationSchema),
+   forgetPassword
  )
 
 

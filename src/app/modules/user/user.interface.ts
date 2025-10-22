@@ -1,5 +1,6 @@
 export type TUser = {
-  id: string
+  id: string,
+  email:string,
   password: string
   passwordChagedAt?:Date,
   needsPasswordChange: boolean

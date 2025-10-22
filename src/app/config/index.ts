@@ -13,7 +13,9 @@ export default {
   JWT_Access_Secret:process.env.JWT_Access_Secret as string,
   JWT_Refresh_Secret:process.env.JWT_Refresh_Secret as string,
   JWT_Access_Expired:process.env.JWT_Access_Expired || "10d",
-  JWT_Refresh_Expired:process.env.JWT_Refresh_Expired|| "365d"
+  JWT_Refresh_Expired:process.env.JWT_Refresh_Expired|| "365d",
+  Reset_Password_UI_Link:process.env.Reset_Password_UI_Link 
+
 }
 
 
@@ -26,12 +28,14 @@ export default {
 // bcrypt=12
 // default_Pass=1234568888
 
-// JWT_Access_Secret="secret"
-// JWT_Refresh_Secret= 71d21acfbfa99f5d6357cc71abcee8798a17b72b12fe53daec4fe093cfc49cd0
+// JWT_Access_Secret=f9a84cd7d525ce1e4fde60bccce2095d5182185b872e331c8c3fbed5b82a0635
+
+// JWT_Refresh_Secret=71d21acfbfa99f5d6357cc71abcee8798a17b72b12fe53daec4fe093cfc49cd0
 
 // JWT_Access_Expired=10d
 // JWT_Refresh_Expired=365d
 
+// Reset_Password_UI_Link= http://localhost:3000
 
 // process to genrated secret key by terminal
 

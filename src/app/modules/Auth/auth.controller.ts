@@ -2,7 +2,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsynFunction } from "../../utils/catchAsync";
 import { senResponse } from "../../utils/sendResponse";
-import { changedPasswordServices, loginUserServices, refreshTokenServices } from "./auth.service";
+import { changedPasswordServices, forgetPasswordServices, loginUserServices, refreshTokenServices } from "./auth.service";
 
 
 
@@ -78,6 +78,32 @@ export let changedPassword = catchAsynFunction(async(req,res)=>{
     
          status: true,
         message: 'Password Changed successfully',
+        data: null,
+        
+      })
+
+
+
+})
+
+
+
+export let forgetPassword = catchAsynFunction(async(req,res)=>{
+
+
+ 
+
+     let id=req.body.id
+
+     let result= await forgetPasswordServices(id)
+
+
+   
+    
+    senResponse(res,200,{
+    
+         status: true,
+        message: 'Reset link is generated successfully',
         data: null,
         
       })
