@@ -21,8 +21,8 @@ const transporter = nodemailer.createTransport({
  await transporter.sendMail({
     from: 'abdshakaet@gmail.com',
     to: `${to}`,
-    subject: "Password changed koro",
-    text: "Reset your Password within 10 minutes", // plain‑text body
+    subject: "Reset your Password within 10 minutes",
+    text: "", // plain‑text body
     html:`${html}`, // HTML body
   });
 

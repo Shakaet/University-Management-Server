@@ -266,3 +266,12 @@ export let forgetPasswordServices=async(id:string)=>{
 
 
 }
+
+export let resetPasswordServices=async(token:string,payload:{id:string,newPassword:string})=>{
+
+
+
+    const user = await validateUserById(payload.id);
+
+
+}

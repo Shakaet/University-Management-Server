@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest";
-import { changedPasswordValidationSchema, forgetPassswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema } from "./auth.zod";
-import { changedPassword, forgetPassword, loginUser, refreshToken } from "./auth.controller";
+import { changedPasswordValidationSchema, forgetPassswordValidationSchema, loginValidationSchema, refreshTokenValidationSchema, resetPassswordValidationSchema } from "./auth.zod";
+import { changedPassword, forgetPassword, loginUser, refreshToken, resetPassword } from "./auth.controller";
 import { auth } from "../../middleware/auth";
 import { user_role } from "../user/user.constrain";
 
@@ -35,6 +35,12 @@ import { user_role } from "../user/user.constrain";
    validateRequest(forgetPassswordValidationSchema),
    forgetPassword
  )
+
+ router.post("/reset-password",
+   validateRequest(resetPassswordValidationSchema),
+   resetPassword
+ )
+
 
 
  export let authRoute=router

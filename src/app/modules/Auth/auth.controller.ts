@@ -1,8 +1,9 @@
+import { Token } from './../../../../node_modules/@aws-sdk/types/dist-types/token.d';
 
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsynFunction } from "../../utils/catchAsync";
 import { senResponse } from "../../utils/sendResponse";
-import { changedPasswordServices, forgetPasswordServices, loginUserServices, refreshTokenServices } from "./auth.service";
+import { changedPasswordServices, forgetPasswordServices, loginUserServices, refreshTokenServices, resetPasswordServices } from "./auth.service";
 
 
 
@@ -104,6 +105,31 @@ export let forgetPassword = catchAsynFunction(async(req,res)=>{
     
          status: true,
         message: 'Reset link is generated successfully',
+        data: null,
+        
+      })
+
+
+
+})
+
+
+export let resetPassword = catchAsynFunction(async(req,res)=>{
+
+
+    let token =req.headers.authorization as string
+
+     
+
+     let result= await resetPasswordServices(token,req.body)
+
+
+   
+    
+    senResponse(res,200,{
+    
+         status: true,
+        message: 'Password Reset successfully',
         data: null,
         
       })

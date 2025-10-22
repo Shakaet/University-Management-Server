@@ -39,3 +39,15 @@ export const forgetPassswordValidationSchema=z.object({
     })
   })
 })
+
+export const resetPassswordValidationSchema=z.object({
+
+  body:z.object({
+    id:z.string({
+      message:"Id is Required"
+    }),
+     newPassword:z.string({
+      message:"Password is Required"
+    })
+  })
+})
