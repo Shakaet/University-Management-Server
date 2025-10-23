@@ -119,7 +119,7 @@ export let resetPassword = catchAsynFunction(async(req,res)=>{
 
     let token =req.headers.authorization as string
 
-     
+      console.log(token)
 
      let result= await resetPasswordServices(token,req.body)
 

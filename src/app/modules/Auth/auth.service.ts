@@ -274,4 +274,41 @@ export let resetPasswordServices=async(token:string,payload:{id:string,newPasswo
     const user = await validateUserById(payload.id);
 
 
+     const decoded = jwt.verify(token, config.JWT_Access_Secret as string);
+    
+                // check roles are valid
+    
+                let role= (decoded as JwtPayload).role
+    
+                let id= (decoded as JwtPayload). userId
+                let iat=(decoded as JwtPayload).iat
+
+
+                if(id !==payload.id){
+
+                    throw new AppError(403,"you are forbidden","")
+                }
+
+
+
+                 // hash new password
+
+    let newHashPassWord =await bcrypt.hash(payload.newPassword,Number(config.bcryptHash))
+
+
+
+//    console.log(newHashPassWord)
+
+    let result=await UserModel.findOneAndUpdate({
+        id:id,
+        role:role
+    },{
+        password:newHashPassWord,
+        needsPasswordChange:false,
+        passwordChgagedAt:new Date()
+    })
+
+    
+
+
 }
