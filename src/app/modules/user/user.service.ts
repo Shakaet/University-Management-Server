@@ -1,4 +1,4 @@
-import { Student } from './../student/student.interface';
+import { Student, StudentModel } from './../student/student.interface';
 import { TacademicSemester } from './../academicSem/academicSem.interface'
 import { object } from 'joi'
 import config from '../../config'
@@ -15,6 +15,8 @@ import { Faculty } from '../faculty/faculty.model';
 import { TFaculty } from '../faculty/faculty.interface';
 import { academicDepartmentModel } from '../academicDepartment/academicDepartment.model';
 import Admin from '../admin/admin.model';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { user_role } from './user.constrain';
 
 export const createStudentToDatabase = async (
   password: string,
@@ -205,4 +207,68 @@ export const createAdminIntoDB = async (password: string, payload: TFaculty) => 
     throw new Error(err);
   }
 };
+
+
+
+export let getMeServices=async(token:string)=>{
+
+  console.log(token)
+
+
+   const decoded = jwt.verify(token, config.JWT_Access_Secret as string);
+    
+                // check roles are valid
+    
+                let role= (decoded as JwtPayload).role
+    
+                let id= (decoded as JwtPayload). userId
+                let iat=(decoded as JwtPayload).iat
+
+
+                console.log(id)
+
+              let result=null
+                if(role===user_role.student){
+
+                  result=await  studentmodel.findOne({id:id}).populate("user")
+                }
+
+                if(role===user_role.admin){
+
+                  result=await  Admin.findOne({id:id}).populate("user")
+                }
+
+                if(role===user_role.faculty){
+
+                  result=await  Faculty.findOne({id:id}).populate("user")
+                }
+
+
+                return result
+
+
+    
+  
+}
+
+
+
+
+export let changedUserStatusServices=async(id:string,payload:{status:string})=>{
+
+
+          let result=await UserModel.findByIdAndUpdate(id,
+            payload,
+            {
+              new:true
+            }
+          )
+
+
+            return result
+
+
+    
+  
+}
 

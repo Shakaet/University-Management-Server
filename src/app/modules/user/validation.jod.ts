@@ -14,3 +14,14 @@ export const userZodSchema = z.object({
   //   status: z.enum(["in-progress", "blocked"]).default("in-progress"),
   //   isDeleted: z.boolean().default(false),
 })
+
+let userStatus=['in-progress', 'blocked']
+export const changedStatusZodSchema = z.object({
+  
+  body:z.object({
+    status: z
+    .enum([...userStatus] as [string,...string[]])
+  })
+
+  
+})
