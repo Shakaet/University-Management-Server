@@ -15,8 +15,17 @@ const router = express.Router()
 // will call controller function
 router.post('/create-student',
   auth(user_role.admin),
+  // file mane file ta je name pathabo ekn file namei pathacchi
   upload.single("file"),
-  //  validateRequest(studentZodSchema),
+  // parse data text to json
+  (req:Request,res:Response,next:NextFunction)=>{
+
+    req.body= JSON.parse(req.body.data)
+    // console.log(req.body)
+    next()
+
+  },
+   validateRequest(studentZodSchema),
     createStudent)
 router.post(
   '/create-faculty',

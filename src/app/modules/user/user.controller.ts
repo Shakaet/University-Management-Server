@@ -9,6 +9,7 @@ import { AppError } from '../../Errors/AppError'
 export const createStudent = catchAsynFunction(async (req, res) => {
 
    console.log(req.file)
+   console.log("body",req.body)
   // let { password, student } = req.body
 
   // let result = await createStudentToDatabase(password, student)
