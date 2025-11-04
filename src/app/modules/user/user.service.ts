@@ -17,6 +17,7 @@ import { academicDepartmentModel } from '../academicDepartment/academicDepartmen
 import Admin from '../admin/admin.model';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { user_role } from './user.constrain';
+import { sendImagetoCloudinary } from '../../utils/sendImagetoCloudinary';
 
 export const createStudentToDatabase = async (
   password: string,
@@ -63,6 +64,12 @@ export const createStudentToDatabase = async (
       userData.id = await generatedStudentId(studentsAcademicSemester)
   // userData.id=uuid()
    
+
+
+  //send images to Cloudinary
+
+  sendImagetoCloudinary()
+  
   // transaction 1
   //create users
   let newUser = await UserModel.create([userData],{session})
@@ -246,8 +253,6 @@ export let getMeServices=async(token:string)=>{
 
                 return result
 
-
-    
   
 }
 

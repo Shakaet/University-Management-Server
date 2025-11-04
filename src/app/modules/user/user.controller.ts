@@ -7,9 +7,11 @@ import { AppError } from '../../Errors/AppError'
 
 // RequestHandler dile autometic req,res,next er type declard hoye jabe
 export const createStudent = catchAsynFunction(async (req, res) => {
-  let { password, student } = req.body
 
-  let result = await createStudentToDatabase(password, student)
+   console.log(req.file)
+  // let { password, student } = req.body
+
+  // let result = await createStudentToDatabase(password, student)
 
   // send response
 
@@ -21,8 +23,8 @@ export const createStudent = catchAsynFunction(async (req, res) => {
 
   senResponse(res, 200, {
     status: true,
-    message: (result as any)?.message || 'student created successfullyN',
-    data: result,
+    // message: (result as any)?.message || 'student created successfullyN',
+    data: null,
   })
 })
 
@@ -54,7 +56,7 @@ export const createAdmin = catchAsynFunction(async (req, res) => {
 
 export const getMe = catchAsynFunction(async (req, res) => {
   
-
+  //  let token=req.user
   let token = req.headers.authorization as string
 
   if(!token){

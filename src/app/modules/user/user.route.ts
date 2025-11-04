@@ -8,11 +8,16 @@ import { createAdminSchema } from '../admin/validation.zod'
 import { auth } from '../../middleware/auth'
 import { user_role } from './user.constrain'
 import { changedStatusZodSchema } from './validation.jod'
+import { upload } from '../../utils/sendImagetoCloudinary'
 
 const router = express.Router()
 
 // will call controller function
-router.post('/create-student',auth(user_role.admin), validateRequest(studentZodSchema), createStudent)
+router.post('/create-student',
+  auth(user_role.admin),
+  upload.single("file"),
+  //  validateRequest(studentZodSchema),
+    createStudent)
 router.post(
   '/create-faculty',
   auth(user_role.admin),

@@ -14,7 +14,12 @@ export default {
   JWT_Refresh_Secret:process.env.JWT_Refresh_Secret as string,
   JWT_Access_Expired:process.env.JWT_Access_Expired || "10d",
   JWT_Refresh_Expired:process.env.JWT_Refresh_Expired|| "365d",
-  Reset_Password_UI_Link:process.env.Reset_Password_UI_Link 
+  Reset_Password_UI_Link:process.env.Reset_Password_UI_Link,
+
+  // for cloudinary
+  Cloud_Name:process.env.Cloud_Name,
+  Api_Key:process.env.Api_Key,
+  Api_Secret:process.env.Api_Secret
 
 }
 
@@ -36,6 +41,11 @@ export default {
 // JWT_Refresh_Expired=365d
 
 // Reset_Password_UI_Link= http://localhost:3000
+
+//for cloudinary
+// Cloud_Name=dglcaf1e7
+// Api_Key=993983958445659
+// Api_Secret=PHh4KeMTqT7mvVNqo8tFx4SJuz4
 
 // process to genrated secret key by terminal
 
