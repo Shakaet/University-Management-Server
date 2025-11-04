@@ -20,6 +20,7 @@ import { user_role } from './user.constrain';
 import { sendImagetoCloudinary } from '../../utils/sendImagetoCloudinary';
 
 export const createStudentToDatabase = async (
+  file:any,
   password: string,
   student: Student,
 ) => {
@@ -68,7 +69,11 @@ export const createStudentToDatabase = async (
 
   //send images to Cloudinary
 
-  sendImagetoCloudinary()
+ 
+  let imageName = `${userData?.id}_${Date.now()}`;
+  let path=file?.path
+
+  sendImagetoCloudinary(imageName,path)
   
   // transaction 1
   //create users

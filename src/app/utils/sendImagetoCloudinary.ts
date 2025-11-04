@@ -3,7 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 
 import multer from 'multer'
 import config from "../config";
-export let sendImagetoCloudinary=async()=>{
+export let sendImagetoCloudinary=async(imageName:string,path:string)=>{
 
 
 
@@ -19,8 +19,8 @@ export let sendImagetoCloudinary=async()=>{
      // Upload an image
      const uploadResult = await cloudinary.uploader
        .upload(
-           'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
-               public_id: 'shoes',
+           path, {
+               public_id: imageName,
            }
        )
        .catch((error) => {
