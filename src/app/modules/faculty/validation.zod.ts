@@ -27,7 +27,7 @@ const bloodGroupEnum: [
  */
 export const createFacultyZodSchema = z.object({
   body: z.object({
-     password: z.string().max(20),
+     password: z.string().max(20).optional(),
      faculty: z.object({
         //   id: z.string().min(1, "ID is required"),
         // user: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId"),
@@ -41,7 +41,7 @@ export const createFacultyZodSchema = z.object({
         bloogGroup: z.enum(bloodGroupEnum).optional(),
         presentAddress: z.string().min(1, "Present address is required"),
         permanentAddress: z.string().min(1, "Permanent address is required"),
-        profileImg: z.string().url().optional(),
+        // profileImg: z.string().url().optional(),
         academicDepartment: z
           .string()
           .regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId"),

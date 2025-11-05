@@ -3,11 +3,8 @@ import { v2 as cloudinary } from 'cloudinary';
 
 import multer from 'multer'
 import config from "../config";
-export let sendImagetoCloudinary=async(imageName:string,path:string)=>{
-
-
-
-    // Configuration
+import fs from 'fs';
+ // Configuration
     cloudinary.config({ 
         cloud_name: config.Cloud_Name, 
         api_key: config.Api_Key, 
@@ -15,20 +12,25 @@ export let sendImagetoCloudinary=async(imageName:string,path:string)=>{
     });
 
 
+export let sendImagetoCloudinary=async(imageName:string,path:string)=>{
 
-     // Upload an image
-     const uploadResult = await cloudinary.uploader
-       .upload(
-           path, {
-               public_id: imageName,
-           }
-       )
-       .catch((error) => {
-           console.log(error);
-       });
+      try {
+    const uploadResult = await cloudinary.uploader.upload(path, {
+      public_id: imageName,
+    });
 
-        console.log(uploadResult);
+    // Cloudinary upload শেষে local file delete
+    try {
+      await fs.promises.unlink(path);
+    } catch (err) {
+      console.error("❌ Failed to delete local file:", err);
+    }
 
+    return uploadResult; // ✅ এখন result safe ভাবে return হবে
+  } catch (error) {
+    console.error("❌ Cloudinary upload error:", error);
+    throw error; // ✅ parent function handle করতে পারবে
+  }
 
 
 }

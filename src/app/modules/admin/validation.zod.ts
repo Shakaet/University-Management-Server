@@ -9,7 +9,7 @@ export const userNameSchema = z.object({
 export const createAdminSchema = z.object({
   body: z.object({
 
-     password: z.string().max(20),
+     password: z.string().max(20).optional(),
 
      admin:z.object({
         
@@ -29,7 +29,7 @@ export const createAdminSchema = z.object({
       .optional(),
     presentAddress: z.string().min(1, "Present address is required"),
     permanentAddress: z.string().min(1, "Permanent address is required"),
-    profileImg: z.string().url("Invalid image URL").optional(),
+    // profileImg: z.string().url("Invalid image URL").optional(),
     isDeleted: z.boolean().default(false),})
 
     

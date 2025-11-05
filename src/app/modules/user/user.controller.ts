@@ -33,7 +33,7 @@ export const createStudent = catchAsynFunction(async (req, res) => {
 export const createFaculty = catchAsynFunction(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
 
-  const result = await createFacultyIntoDB(password, facultyData);
+  const result = await createFacultyIntoDB(req.file,password, facultyData);
 
   senResponse(res, 200, {
     status: true,
@@ -45,7 +45,7 @@ export const createFaculty = catchAsynFunction(async (req, res) => {
 export const createAdmin = catchAsynFunction(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
-  const result = await createAdminIntoDB(password, adminData);
+  const result = await createAdminIntoDB(req.file,password, adminData);
 
   senResponse(res,200, {
     status: true,

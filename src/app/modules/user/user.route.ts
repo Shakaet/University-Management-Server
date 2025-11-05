@@ -30,12 +30,29 @@ router.post('/create-student',
 router.post(
   '/create-faculty',
   auth(user_role.admin),
+  upload.single("file"),
+  (req:Request,res:Response,next:NextFunction)=>{
+
+    req.body= JSON.parse(req.body.data)
+    // console.log(req.body)
+    next()
+
+  },
+
   validateRequest(createFacultyZodSchema),
   createFaculty,
 );
 
 router.post(
   '/create-admin',
+   upload.single("file"),
+  (req:Request,res:Response,next:NextFunction)=>{
+
+    req.body= JSON.parse(req.body.data)
+    // console.log(req.body)
+    next()
+
+  },
   validateRequest(createAdminSchema),
    createAdmin,
 );
