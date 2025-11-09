@@ -1,7 +1,7 @@
 import { Student } from './../student/student.interface';
 import { AppError } from "../../Errors/AppError";
 import { OfferedCourseModel } from "../offerCourses/offerCourse.model";
-import { TEnrolledCourse } from "./enrollcourse.interface";
+import { TEnrolledCourse, TEnrolledCourseMarks } from "./enrollcourse.interface";
 import EnrolledCourse from "./enrollcourse.model";
 import { studentmodel } from '../student/student.model';
 import mongoose from 'mongoose';
@@ -155,4 +155,31 @@ if(totalCredits && semesterRegistration?.maxCredit && totalCredits+course?.credi
     throw new Error("failed to Create Students")
 
   }
+}
+
+export let updateEnrolledCourseMarksServices=async(facultyId:string,payload:Partial<TEnrolledCourse>)=>{
+
+  let  {semesterRegistration,offeredCourse,student,courseMarks}=payload
+
+   let isSemesterRegestrationExist=await SemesterRegistrationModel.findById(semesterRegistration)
+
+    if(!isSemesterRegestrationExist){
+        throw new AppError(404,"Semester Registration not found !","")
+    }
+
+
+    let isOfferedCourseExist=await OfferedCourseModel.findById(offeredCourse)
+
+    if(!isOfferedCourseExist){
+        throw new AppError(404,"offer course not found !","")
+    }
+
+
+    let isStudentExist=await studentmodel.findById(offeredCourse)
+
+    if(!isStudentExist){
+        throw new AppError(404,"Student not found","")
+    }
+
+
 }
