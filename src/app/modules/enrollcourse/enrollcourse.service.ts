@@ -58,10 +58,29 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
     {$match:{
      semesterRegistration:isOfferedCourseExist.semesterRegistration,
      student:student._id
-}}
+}},
+{
+    $lookup:{
+        from:"courses",
+        localField:"course",
+        foreignField:"_id",
+         as:"enrolledCourseData"
+
+    }
+},
+{
+    $unwind:"$enrolledCourseData"
+},
+{
+    $group:{_id:null,totalEnrolledCredit:{$sum:"$enrolledCourseData.credit"}}
+},
+{
+        $project:{_id:0,totalEnrolledCredit:1}
+    }
+
    ])
 
-   console.log(enrollCourses)  
+   console.log(enrollCourses[0].totalEnrolledCredit)  
 
 
 //     let session=await mongoose.startSession()
