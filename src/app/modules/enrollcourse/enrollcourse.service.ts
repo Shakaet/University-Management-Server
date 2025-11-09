@@ -6,6 +6,7 @@ import EnrolledCourse from "./enrollcourse.model";
 import { studentmodel } from '../student/student.model';
 import mongoose from 'mongoose';
 import { SemesterRegistrationModel } from '../semesterRegistration/semRe.model';
+import { CourseModel } from '../course/course.model';
 
 
 export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCourse)=>{
@@ -13,7 +14,8 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
 
     // validation : step 1: check the offeredCourse is exist
     // step2: check if the student is already enrolled
-    // step 3: create an enrolled course
+    // step3: check if the max credit exceed
+    // step 4: create an enrolled course
 
     let {offeredCourse}=payload
 
@@ -22,6 +24,10 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
     if(!isOfferedCourseExist){
         throw new AppError(404,"offer course not found !","")
     }
+
+  
+
+    
 
     if(isOfferedCourseExist.maxCapacity<=0){
         throw new AppError(404,"Room is full","")
@@ -80,62 +86,73 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
 
    ])
 
-   console.log(enrollCourses[0].totalEnrolledCredit)  
+//    console.log(enrollCourses[0].totalEnrolledCredit)  
+
+let totalCredits=enrollCourses.length>0 ?enrollCourses[0].totalEnrolledCredit:0
+ 
+// console.log(totalCredits)
+
+ //check total enroll credit+new enroll credit > maxCredit then do throw error
+   let course=await CourseModel.findById(isOfferedCourseExist.course)
+
+if(totalCredits && semesterRegistration?.maxCredit && totalCredits+course?.credit >semesterRegistration?.maxCredit){
+
+    throw new AppError(404,"you have exceeded max number of credit","")
+}
+
+    let session=await mongoose.startSession()
 
 
-//     let session=await mongoose.startSession()
+  try{
 
-
-//   try{
-
-//      session.startTransaction()
+     session.startTransaction()
 
      
 
-//     let result= await EnrolledCourse.create([{
-//         semesterRegistration: isOfferedCourseExist.semesterRegistration,
-//           academicSemester: isOfferedCourseExist.academicSemester,
-//           academicFaculty: isOfferedCourseExist.academicFaculty,
-//           academicDepartment: isOfferedCourseExist.academicDepartment,
-//           offeredCourse: offeredCourse,
-//           course: isOfferedCourseExist.course,
-//           student: student._id,
-//           faculty:isOfferedCourseExist.faculty,
-//           isEnrolled:true
+    let result= await EnrolledCourse.create([{
+        semesterRegistration: isOfferedCourseExist.semesterRegistration,
+          academicSemester: isOfferedCourseExist.academicSemester,
+          academicFaculty: isOfferedCourseExist.academicFaculty,
+          academicDepartment: isOfferedCourseExist.academicDepartment,
+          offeredCourse: offeredCourse,
+          course: isOfferedCourseExist.course,
+          student: student._id,
+          faculty:isOfferedCourseExist.faculty,
+          isEnrolled:true
 
-//         // bakigulo auto mongodb boshabe
-//         //   isEnrolled: 
-//         //   courseMarks: 
-//         //   grade: TGrade;
-//         //   gradePoints:
-//         //   isCompleted: 
-//     }],{session})
+        // bakigulo auto mongodb boshabe
+        //   isEnrolled: 
+        //   courseMarks: 
+        //   grade: TGrade;
+        //   gradePoints:
+        //   isCompleted: 
+    }],{session})
 
-//     if(!result){
-//         throw new AppError(404,"Failed to enrolled in this course","")
-//     }
-
-
-//     let maxcapacity= isOfferedCourseExist.maxCapacity
-//     await OfferedCourseModel.findByIdAndUpdate(
-//         offeredCourse,
-//         {
-//             maxCapacity:maxcapacity-1,
-//         },
-//         {session}
-//     )
-
-//      await session.commitTransaction()
-//     await session.endSession()
-
-//     return result
+    if(!result){
+        throw new AppError(404,"Failed to enrolled in this course","")
+    }
 
 
+    let maxcapacity= isOfferedCourseExist.maxCapacity
+    await OfferedCourseModel.findByIdAndUpdate(
+        offeredCourse,
+        {
+            maxCapacity:maxcapacity-1,
+        },
+        {session}
+    )
 
-//   }catch(err){
-//     await session.abortTransaction()
-//     await session.endSession()
-//     throw new Error("failed to Create Students")
+     await session.commitTransaction()
+    await session.endSession()
 
-//   }
+    return result
+
+
+
+  }catch(err){
+    await session.abortTransaction()
+    await session.endSession()
+    throw new Error("failed to Create Students")
+
+  }
 }
