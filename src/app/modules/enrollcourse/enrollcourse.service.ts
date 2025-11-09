@@ -5,6 +5,7 @@ import { TEnrolledCourse } from "./enrollcourse.interface";
 import EnrolledCourse from "./enrollcourse.model";
 import { studentmodel } from '../student/student.model';
 import mongoose from 'mongoose';
+import { SemesterRegistrationModel } from '../semesterRegistration/semRe.model';
 
 
 export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCourse)=>{
@@ -26,8 +27,10 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
         throw new AppError(404,"Room is full","")
     }
 
-
-    let student=await studentmodel.findOne({id:userId}).select("_id")
+    // 2 tai same
+    // let student=await studentmodel.findOne({id:userId}).select("_id")
+    // field filtering
+    let student=await studentmodel.findOne({id:userId},{_id:1})
 
      if(!student){
         throw new AppError(404,"student not found !","")
@@ -44,61 +47,76 @@ export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCours
         throw new AppError(404,"student already enrolled","")
     }
 
+    // check total credit exceed maxcredit
+    let semesterRegistration=await SemesterRegistrationModel.findById(isOfferedCourseExist.semesterRegistration).select("maxCredit")
 
 
-    let session=await mongoose.startSession()
+    //check total enroll credit+new enroll credit > maxCredit then do throw error
 
 
-  try{
+   let enrollCourses=await EnrolledCourse.aggregate([
+    {$match:{
+     semesterRegistration:isOfferedCourseExist.semesterRegistration,
+     student:student._id
+}}
+   ])
 
-     session.startTransaction()
+   console.log(enrollCourses)  
+
+
+//     let session=await mongoose.startSession()
+
+
+//   try{
+
+//      session.startTransaction()
 
      
 
-    let result= await EnrolledCourse.create([{
-        semesterRegistration: isOfferedCourseExist.semesterRegistration,
-          academicSemester: isOfferedCourseExist.academicSemester,
-          academicFaculty: isOfferedCourseExist.academicFaculty,
-          academicDepartment: isOfferedCourseExist.academicDepartment,
-          offeredCourse: offeredCourse,
-          course: isOfferedCourseExist.course,
-          student: student._id,
-          faculty:isOfferedCourseExist.faculty,
-          isEnrolled:true
+//     let result= await EnrolledCourse.create([{
+//         semesterRegistration: isOfferedCourseExist.semesterRegistration,
+//           academicSemester: isOfferedCourseExist.academicSemester,
+//           academicFaculty: isOfferedCourseExist.academicFaculty,
+//           academicDepartment: isOfferedCourseExist.academicDepartment,
+//           offeredCourse: offeredCourse,
+//           course: isOfferedCourseExist.course,
+//           student: student._id,
+//           faculty:isOfferedCourseExist.faculty,
+//           isEnrolled:true
 
-        // bakigulo auto mongodb boshabe
-        //   isEnrolled: 
-        //   courseMarks: 
-        //   grade: TGrade;
-        //   gradePoints:
-        //   isCompleted: 
-    }],{session})
+//         // bakigulo auto mongodb boshabe
+//         //   isEnrolled: 
+//         //   courseMarks: 
+//         //   grade: TGrade;
+//         //   gradePoints:
+//         //   isCompleted: 
+//     }],{session})
 
-    if(!result){
-        throw new AppError(404,"Failed to enrolled in this course","")
-    }
-
-
-    let maxcapacity= isOfferedCourseExist.maxCapacity
-    await OfferedCourseModel.findByIdAndUpdate(
-        offeredCourse,
-        {
-            maxCapacity:maxcapacity-1,
-        },
-        {session}
-    )
-
-     await session.commitTransaction()
-    await session.endSession()
-
-    return result
+//     if(!result){
+//         throw new AppError(404,"Failed to enrolled in this course","")
+//     }
 
 
+//     let maxcapacity= isOfferedCourseExist.maxCapacity
+//     await OfferedCourseModel.findByIdAndUpdate(
+//         offeredCourse,
+//         {
+//             maxCapacity:maxcapacity-1,
+//         },
+//         {session}
+//     )
 
-  }catch(err){
-    await session.abortTransaction()
-    await session.endSession()
-    throw new Error("failed to Create Students")
+//      await session.commitTransaction()
+//     await session.endSession()
 
-  }
+//     return result
+
+
+
+//   }catch(err){
+//     await session.abortTransaction()
+//     await session.endSession()
+//     throw new Error("failed to Create Students")
+
+//   }
 }
