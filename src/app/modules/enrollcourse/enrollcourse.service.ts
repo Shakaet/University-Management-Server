@@ -7,6 +7,7 @@ import { studentmodel } from '../student/student.model';
 import mongoose from 'mongoose';
 import { SemesterRegistrationModel } from '../semesterRegistration/semRe.model';
 import { CourseModel } from '../course/course.model';
+import { Faculty } from '../faculty/faculty.model';
 
 
 export let createEnrolledCourseIntoDB=async(userId:string,payload:TEnrolledCourse)=>{
@@ -175,11 +176,58 @@ export let updateEnrolledCourseMarksServices=async(facultyId:string,payload:Part
     }
 
 
-    let isStudentExist=await studentmodel.findById(offeredCourse)
+    let isStudentExist=await studentmodel.findById(student)
 
     if(!isStudentExist){
         throw new AppError(404,"Student not found","")
     }
+
+      
+    let faculty=await Faculty.findOne({id:facultyId},{_id:1})
+    if(!faculty){
+        throw new AppError(404,"faculty not found","")
+    }
+
+    // console.log(faculty)
+    // is exist the faculty who access and update this data
+
+    let isCoursebelongToFaculty=await EnrolledCourse.findOne({
+                semesterRegistration,
+                offeredCourse,
+                student,
+                faculty:faculty._id
+            })
+
+
+
+            // console.log(isCoursebelongToFaculty)
+
+            if(!isCoursebelongToFaculty){
+                throw new AppError(403,"you are forbidden","")
+            }
+
+            //  console.log(isCoursebelongToFaculty)
+
+            let modifiedData:Record<string,unknown>={
+
+                ...courseMarks,
+            }
+
+            if(courseMarks && Object.keys(courseMarks).length){
+                for(let [key,value] of Object.entries(courseMarks)){
+
+                    modifiedData[`courseMarks.${key}`]=value
+                }
+            }
+
+            let result=await EnrolledCourse.findByIdAndUpdate(
+                isCoursebelongToFaculty._id,
+                modifiedData,
+                {new:true}
+            )
+
+
+            return result
 
 
 }

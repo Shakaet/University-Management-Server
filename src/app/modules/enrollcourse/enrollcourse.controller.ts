@@ -32,6 +32,8 @@ export let  updateEnrolledCourseMarks=catchAsynFunction(async(req,res)=>{
   let facultyId=req.user.userId
   // console.log(user)
 
+  // console.log(facultyId)
+
 
   let result=await updateEnrolledCourseMarksServices(facultyId,req.body)
 
