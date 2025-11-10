@@ -213,6 +213,20 @@ export let updateEnrolledCourseMarksServices=async(facultyId:string,payload:Part
                 ...courseMarks,
             }
 
+
+
+            if(courseMarks?.finalTerm){
+                let {classTest1,midTerm,classTest2,finalTerm}=isCoursebelongToFaculty.courseMarks
+                 
+                let totalmarks=Math.ceil(classTest1*0.10)+
+                 Math.ceil(midTerm*0.30)+
+                 Math.ceil(classTest2*0.10)+
+                 Math.ceil(finalTerm*0.50)
+
+                 console.log(totalmarks)
+
+            }
+
             if(courseMarks && Object.keys(courseMarks).length){
                 for(let [key,value] of Object.entries(courseMarks)){
 
