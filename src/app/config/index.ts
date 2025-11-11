@@ -19,7 +19,8 @@ export default {
   // for cloudinary
   Cloud_Name:process.env.Cloud_Name,
   Api_Key:process.env.Api_Key,
-  Api_Secret:process.env.Api_Secret
+  Api_Secret:process.env.Api_Secret,
+  SuperAdminPassword:process.env.SuperAdminPassword
 
 }
 
@@ -46,6 +47,7 @@ export default {
 // Cloud_Name=dglcaf1e7
 // Api_Key=993983958445659
 // Api_Secret=PHh4KeMTqT7mvVNqo8tFx4SJuz4
+// SuperAdminPassword=admin12345
 
 // process to genrated secret key by terminal
 

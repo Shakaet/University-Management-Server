@@ -10,16 +10,17 @@ const router = Router()
 
 
 
-router.get('/faculty/:id', FacultyControllers.getSingleFaculty);
+router.get('/faculty/:id',auth(user_role.admin,user_role.superAdmin,user_role.faculty), FacultyControllers.getSingleFaculty);
 
 router.patch(
   '/faculty/:id',
+  auth(user_role.admin,user_role.superAdmin),
   validateRequest(updateFacultyZodSchema),
   FacultyControllers.updateFaculty,
 );
 
-router.delete('/faculty/:id', FacultyControllers.deleteFaculty);
+router.delete('/faculty/:id',auth(user_role.admin,user_role.superAdmin), FacultyControllers.deleteFaculty);
 
-router.get('/faculty',auth(user_role.admin,user_role.faculty), FacultyControllers.getAllFaculties);
+router.get('/faculty',auth(user_role.admin,user_role.superAdmin,user_role.faculty), FacultyControllers.getAllFaculties);
 
 export const FacultyRoutes = router

@@ -11,7 +11,7 @@ const userSchema = new Schema<TUser>(
     password: { type: String, required: true, select:0 },
     passwordChagedAt:{type:Date},
     needsPasswordChange: { type: Boolean, default: true },
-    role: { type: String, enum: ['student', 'admin', 'faculty'] },
+    role: { type: String, enum: ["super-admin",'student', 'admin', 'faculty'] },
     status: {
       type: String,
       enum: ['in-progress', 'blocked'],

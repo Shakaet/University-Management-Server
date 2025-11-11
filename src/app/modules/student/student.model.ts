@@ -121,7 +121,7 @@ export const studentSchema = new Schema<Student, StudentModel, StudentMethods>(
       type: localGuardianSchema,
       required: true,
     },
-    profileImg: { type: String },
+    profileImg: { type: String,default:"" },
     addmissionSemester: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
@@ -129,6 +129,11 @@ export const studentSchema = new Schema<Student, StudentModel, StudentMethods>(
     academicDepartment:{
        type: Schema.Types.ObjectId,
       ref: 'academicDepartment',
+
+    },
+    academicFaculty:{
+       type: Schema.Types.ObjectId,
+      ref: 'academicFaculty',
 
     },
     isDeleted: { type: Boolean, default: false },

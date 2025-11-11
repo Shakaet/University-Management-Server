@@ -14,7 +14,7 @@ const router = express.Router()
 
 // will call controller function
 router.post('/create-student',
-  auth(user_role.admin),
+  auth(user_role.admin,user_role.superAdmin),
   // file mane file ta je name pathabo ekn file namei pathacchi
   upload.single("file"),
   // parse data text to json
@@ -29,7 +29,7 @@ router.post('/create-student',
     createStudent)
 router.post(
   '/create-faculty',
-  auth(user_role.admin),
+  auth(user_role.admin,user_role.superAdmin),
   upload.single("file"),
   (req:Request,res:Response,next:NextFunction)=>{
 
@@ -45,6 +45,7 @@ router.post(
 
 router.post(
   '/create-admin',
+  auth(user_role.admin,user_role.superAdmin),
    upload.single("file"),
   (req:Request,res:Response,next:NextFunction)=>{
 
@@ -59,12 +60,13 @@ router.post(
 
 router.get(
   '/me',
-   auth(user_role.admin,user_role.student,user_role.faculty),
+   auth(user_role.superAdmin,user_role.admin,user_role.student,user_role.faculty),
    getMe,
 );
 
 router.post(
   '/changed-status/:id',
+  auth(user_role.admin,user_role.superAdmin),
    auth(user_role.admin),
    validateRequest(changedStatusZodSchema),
    changedUserStatus,
