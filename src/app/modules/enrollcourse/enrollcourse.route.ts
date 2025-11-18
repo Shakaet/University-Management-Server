@@ -3,6 +3,7 @@ import { auth } from '../../middleware/auth';
 import { validateRequest } from '../../middleware/validateRequest';
 import { createEnrolledCourseValidationZodSchema, updateEnrolledCourseMarksValidationZodSchema } from './enrollcourse.zod';
 import { createEnrolledCourse, updateEnrolledCourseMarks } from './enrollcourse.controller';
+import { user_role } from '../user/user.constrain';
 
 
 const router = express.Router();
@@ -18,7 +19,7 @@ router.post(
 
 router.patch(
   '/update-enrolled-course-marks',
-  auth('faculty'),
+  auth('faculty',user_role.superAdmin,user_role.admin),
   validateRequest(
     updateEnrolledCourseMarksValidationZodSchema,
   ),

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { validateRequest } from '../../middleware/validateRequest'
 import { assignFacultyZodSchema, createCourseValidationSchema, FacultyZodSchema, updateCourseValidationSchema } from './course.zod'
-import { assignFaculties, assignFacultiesWithCourse, createCoursesController, deletedCoursesController, deleteFacultiesWithCourse, findAllCoursesController, findOneCoursesController, updateCoursesController } from './course.controller'
+import { assignFaculties, assignFacultiesWithCourse, createCoursesController, deletedCoursesController, deleteFacultiesWithCourse, findAllCoursesController, findOneCoursesController, getFacultiesWithCourse, updateCoursesController } from './course.controller'
 import { user_role } from '../user/user.constrain'
 import { auth } from '../../middleware/auth'
 
@@ -20,6 +20,8 @@ router.delete('/:courseId',auth(user_role.admin,user_role.superAdmin), deletedCo
 router.patch('/:courseId',auth(user_role.admin,user_role.superAdmin),validateRequest(updateCourseValidationSchema), updateCoursesController) 
 
 router.put("/:courseId/assign-faculties",auth(user_role.admin,user_role.superAdmin),validateRequest(FacultyZodSchema),assignFacultiesWithCourse)
+
+router.get("/:courseId/get-faculties",auth(user_role.admin,user_role.superAdmin,user_role.faculty,user_role.student),getFacultiesWithCourse)
 
 router.delete("/:courseId/remove-faculties",auth(user_role.admin,user_role.superAdmin),validateRequest(FacultyZodSchema),deleteFacultiesWithCourse)
 

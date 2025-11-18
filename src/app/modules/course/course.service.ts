@@ -189,6 +189,23 @@ export let assignFacultyWithCourseIntoDB=async(id:string,payload:Partial<TFacult
 }
 
 
+export let  getFacultyWithCoursefromDB=async(id:string)=>{
+
+
+
+    let result =await courseFacultyModel.findOne({course:id}).populate("faculties")
+
+    return result
+
+    
+
+ 
+
+
+
+}
+
+
 
 
 export let removedFacultyWithCourseFromDB=async(id:string,payload:Partial<TFaculties>)=>{
